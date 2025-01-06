@@ -1,8 +1,0 @@
-{
-    "java.project.sourcePaths": ["src"],
-    "java.project.outputPath": "bin",
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "/Users/kimtospan/Java/javafx-sdk-23.0.1/lib/**/*.jar"
-    ]
-}
