@@ -4,6 +4,9 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 public class App extends Application {
+    public static Stage primaryStage;
+    public static Scene mainScene;
+    public static Scene gameScene;
     public static void main(String[] args) throws Exception {
         System.out.println("Hello, World!");
         System.out.println("Hello, World! 3");
@@ -11,10 +14,18 @@ public class App extends Application {
     }
     @Override
     public void start(Stage primaryStage) {
-        Label label = new Label("Memory Game");
-        Scene scene = new Scene(label, 400, 200);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("JavaFX App");
+
+        App.primaryStage = primaryStage;
+        SceneCreator mainSceneCreator = new MainSceneCreator(800, 600);
+        SceneCreator gameSceneCreator = new GameSceneCreator(800, 600);
+        mainScene = mainSceneCreator.createScene();
+        gameScene = gameSceneCreator.createScene();
+
+
+
+        
+        primaryStage.setScene(mainScene);
+        primaryStage.setTitle("Memory Game");
         primaryStage.show();
     }
 }
