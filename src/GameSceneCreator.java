@@ -1,26 +1,32 @@
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-
 public class GameSceneCreator extends SceneCreator {
-    private static final int GRID_SIZE = 4;
-    private static final String CARD_BACK_IMAGE = "/img/back.png"; 
-    private static final String[] CARD_IMAGES = {
-         "/img/Dragon.png", "/img/Hound.png", "/img/MahJong.png", "/img/Phoenix.png",
-         "/img/Dragon.png", "/img/Hound.png", "/img/MahJong.png", "/img/Phoenix.png",
-         "/img/Dragon.png", "/img/Hound.png", "/img/MahJong.png", "/img/Phoenix.png",
-         "/img/Dragon.png", "/img/Hound.png", "/img/MahJong.png", "/img/Phoenix.png"};
+    private static final String[] TICHU_IMAGES = {
+        "/img/tichu/Dragon.png", "/img/tichu/Hound.png", "/img/tichu/MahJong.png", "/img/tichu/Phoenix.png",
+        "/img/tichu/Dragon.png", "/img/tichu/Hound.png", "/img/tichu/MahJong.png", "/img/tichu/Phoenix.png",
+        "/img/tichu/Dragon.png", "/img/tichu/Hound.png", "/img/tichu/MahJong.png", "/img/tichu/Phoenix.png",
+        "/img/tichu/Dragon.png", "/img/tichu/Hound.png", "/img/tichu/MahJong.png", "/img/tichu/Phoenix.png"
+    };
+
+    private static final String[] TYPE2_IMAGES = {
+        "/img/type2/Apple.png", "/img/type2/Banana.png", "/img/type2/Cherry.png", "/img/type2/Grape.png",
+        "/img/type2/Apple.png", "/img/type2/Banana.png", "/img/type2/Cherry.png", "/img/type2/Grape.png",
+        "/img/type2/Apple.png", "/img/type2/Banana.png", "/img/type2/Cherry.png", "/img/type2/Grape.png",
+        "/img/type2/Apple.png", "/img/type2/Banana.png", "/img/type2/Cherry.png", "/img/type2/Grape.png"
+    };
+
+    private static final String[] TYPE3_IMAGES = {
+        "/img/type3/Car.png", "/img/type3/Bus.png", "/img/type3/Train.png", "/img/type3/Plane.png",
+        "/img/type3/Car.png", "/img/type3/Bus.png", "/img/type3/Train.png", "/img/type3/Plane.png",
+        "/img/type3/Car.png", "/img/type3/Bus.png", "/img/type3/Train.png", "/img/type3/Plane.png",
+        "/img/type3/Car.png", "/img/type3/Bus.png", "/img/type3/Train.png", "/img/type3/Plane.png"
+    };
+
+    private static final String TICHU_BACK_IMAGE = "/img/tichu/back.png";
+    private static final String TYPE2_BACK_IMAGE = "/img/type2/back.png";
+    private static final String TYPE3_BACK_IMAGE = "/img/type3/back.png";
 
     public GameSceneCreator(double width, double height) {
         super(width, height);
@@ -28,47 +34,44 @@ public class GameSceneCreator extends SceneCreator {
 
     @Override
     Scene createScene() {
-        GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(10));
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
-        gridPane.setAlignment(Pos.CENTER);
-
-        // Shuffle and place cards
-        List<String> cardImages = new ArrayList<>(Arrays.asList(CARD_IMAGES));
-        Collections.shuffle(cardImages);
-
-        for (int i = 0; i < GRID_SIZE; i++) {
-            for (int j = 0; j < GRID_SIZE; j++) {
-                ImageView card = createCard(cardImages.remove(0));
-                gridPane.add(card, j, i);
-            }
+        String[] selectedImages;
+        String backImagePath;
+        switch (App.cardType) {
+            case "Tichu":
+                selectedImages = TICHU_IMAGES;
+                backImagePath = TICHU_BACK_IMAGE;
+                break;
+            case "Type 2":
+                selectedImages = TYPE2_IMAGES;
+                backImagePath = TYPE2_BACK_IMAGE;
+                break;
+            case "Type 3":
+                selectedImages = TYPE3_IMAGES;
+                backImagePath = TYPE3_BACK_IMAGE;
+                break;
+            default:
+                selectedImages = TICHU_IMAGES; // Default to Tichu if no valid selection
+                backImagePath = TICHU_BACK_IMAGE;
+                break;
         }
 
+        Game game = new Game(selectedImages, backImagePath);
         VBox layout = new VBox(10);
-        layout.setAlignment(Pos.CENTER);
+        layout.setAlignment(javafx.geometry.Pos.CENTER);
+        layout.getChildren().add(game.createGameBoard(App.gridSize));
+
         Button goBackButton = new Button("Go Back");
         goBackButton.setOnAction(e -> {
             App.primaryStage.setScene(App.mainScene);
             App.primaryStage.setTitle("Main Scene");
         });
+
         Button exitButton = new Button("Exit");
         exitButton.setOnAction(e -> {
             App.primaryStage.close();
         });
 
-        layout.getChildren().addAll(gridPane, goBackButton);
+        layout.getChildren().addAll(goBackButton, exitButton);
         return new Scene(layout, getWidth(), getHeight());
-    }
-
-    private ImageView createCard(String imagePath) {
-        ImageView card = new ImageView(new Image(getClass().getResource(CARD_BACK_IMAGE).toExternalForm()));
-        card.setFitWidth(100);
-        card.setFitHeight(150);
-        card.setOnMouseClicked(e -> {
-            card.setImage(new Image(getClass().getResource(imagePath).toExternalForm()));
-            // Add game logic here to handle card matching
-        });
-        return card;
     }
 }
