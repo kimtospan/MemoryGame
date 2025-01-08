@@ -4,14 +4,20 @@ import java.util.List;
 
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
-
+// Game logic
 public class Game {
     private Deck deck;
     private Card firstSelectedCard;
     private Card secondSelectedCard;
+    private long startTime;
+    private int matchCounter;
+    private int matchCounterMax;
 
-    public Game(String[] imagePaths, String backImagePath) {
+    public Game(String[] imagePaths, String backImagePath, int gridSize) {
         deck = new Deck(imagePaths, backImagePath);
+        startTime = System.currentTimeMillis();
+        matchCounter = 0;
+        matchCounterMax = (gridSize * gridSize) / 2;
     }
 
     public GridPane createGameBoard(int gridSize) {
@@ -61,5 +67,9 @@ public class Game {
             });
             pause.play();
         }
+    }
+    // Funcion to check if game is over by checking the value of the counter.
+    public void isGameOver() {
+        
     }
 }

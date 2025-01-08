@@ -3,7 +3,12 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
 public class GameSceneCreator extends SceneCreator {
+    // We save the images using only capilized letters. 
     private static final String[] TICHU_IMAGES = {
+        "/img/tichu/Dragon.png", "/img/tichu/Hound.png", "/img/tichu/MahJong.png", "/img/tichu/Phoenix.png",
+        "/img/tichu/Dragon.png", "/img/tichu/Hound.png", "/img/tichu/MahJong.png", "/img/tichu/Phoenix.png",
+        "/img/tichu/Dragon.png", "/img/tichu/Hound.png", "/img/tichu/MahJong.png", "/img/tichu/Phoenix.png",
+        "/img/tichu/Dragon.png", "/img/tichu/Hound.png", "/img/tichu/MahJong.png", "/img/tichu/Phoenix.png",
         "/img/tichu/Dragon.png", "/img/tichu/Hound.png", "/img/tichu/MahJong.png", "/img/tichu/Phoenix.png",
         "/img/tichu/Dragon.png", "/img/tichu/Hound.png", "/img/tichu/MahJong.png", "/img/tichu/Phoenix.png",
         "/img/tichu/Dragon.png", "/img/tichu/Hound.png", "/img/tichu/MahJong.png", "/img/tichu/Phoenix.png",
@@ -36,6 +41,7 @@ public class GameSceneCreator extends SceneCreator {
     Scene createScene() {
         String[] selectedImages;
         String backImagePath;
+        // Switch case to determine the card type
         switch (App.cardType) {
             case "Tichu":
                 selectedImages = TICHU_IMAGES;
@@ -50,12 +56,19 @@ public class GameSceneCreator extends SceneCreator {
                 backImagePath = TYPE3_BACK_IMAGE;
                 break;
             default:
-                selectedImages = TICHU_IMAGES; // Default to Tichu if no valid selection
+                selectedImages = TICHU_IMAGES; // Default to Tichu if no valid selection, we currently only have that lmao.
                 backImagePath = TICHU_BACK_IMAGE;
                 break;
         }
+        // Ensure the correct number of cards are used based on the grid size
+        int numPairs = (App.gridSize * App.gridSize) / 2;
+        String[] selectedImagesSubset = new String[numPairs];
+        for (int i = 0; i < numPairs; i++) {
+            selectedImagesSubset[i] = selectedImages[i % selectedImages.length];
+        }
 
-        Game game = new Game(selectedImages, backImagePath);
+
+        Game game = new Game(selectedImages, backImagePath, App.gridSize);
         VBox layout = new VBox(10);
         layout.setAlignment(javafx.geometry.Pos.CENTER);
         layout.getChildren().add(game.createGameBoard(App.gridSize));

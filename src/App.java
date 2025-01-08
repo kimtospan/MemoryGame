@@ -9,6 +9,9 @@ public class App extends Application {
     public static String playerName;
     public static int gridSize;
     public static String cardType;
+    // To make sure its not different, put it here.
+    public static int CardWidth = 80;
+    public static int CardHeight = 125;
     public static void main(String[] args) throws Exception {
         launch(args);
     }

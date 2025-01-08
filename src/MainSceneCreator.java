@@ -36,7 +36,7 @@ public class MainSceneCreator extends SceneCreator {
 
         Label cardTypeLabel = new Label("Select card type:");
         ComboBox<String> cardTypeComboBox = new ComboBox<>();
-        cardTypeComboBox.getItems().addAll("Type 1", "Type 2", "Type 3");
+        cardTypeComboBox.getItems().addAll("Tichu", "Unavailable", "Unavailable");
 
         Button startGameButton = new Button("Start Game");
         startGameButton.setOnAction(e -> {
@@ -51,7 +51,7 @@ public class MainSceneCreator extends SceneCreator {
             }
             App.cardType = cardTypeComboBox.getValue();
 
-            SceneCreator gameSceneCreator = new GameSceneCreator(1000, 800);
+            SceneCreator gameSceneCreator = new GameSceneCreator(1200, 1000);
             App.gameScene = gameSceneCreator.createScene();
             App.primaryStage.setScene(App.gameScene);
             App.primaryStage.setTitle("Game Scene");
