@@ -6,6 +6,9 @@ public class App extends Application {
     public static Stage primaryStage;
     public static Scene mainScene;
     public static Scene gameScene;
+    public static String playerName;
+    public static int gridSize;
+    public static String cardType;
     public static void main(String[] args) throws Exception {
         launch(args);
     }
@@ -13,10 +16,9 @@ public class App extends Application {
     public void start(Stage primaryStage) {
 
         App.primaryStage = primaryStage;
-        SceneCreator mainSceneCreator = new MainSceneCreator(800, 600);
-        SceneCreator gameSceneCreator = new GameSceneCreator(800, 600);
+        SceneCreator mainSceneCreator = new MainSceneCreator(500, 500);
         mainScene = mainSceneCreator.createScene();
-        gameScene = gameSceneCreator.createScene();
+        
 
 
 

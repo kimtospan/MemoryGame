@@ -52,6 +52,10 @@ public class GameSceneCreator extends SceneCreator {
             App.primaryStage.setScene(App.mainScene);
             App.primaryStage.setTitle("Main Scene");
         });
+        Button exitButton = new Button("Exit");
+        exitButton.setOnAction(e -> {
+            App.primaryStage.close();
+        });
 
         layout.getChildren().addAll(gridPane, goBackButton);
         return new Scene(layout, getWidth(), getHeight());
