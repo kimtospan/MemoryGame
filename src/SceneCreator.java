@@ -1,4 +1,5 @@
 import javafx.scene.Scene;
+// SceneCreator is an abstract class that creates a Scene object
 
 public abstract class SceneCreator {
     private double width;

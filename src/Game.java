@@ -13,20 +13,24 @@ public class Game {
     private int matchCounter;
     private int matchCounterMax;
 
-    public Game(String[] imagePaths, String backImagePath, int gridSize) {
+    // Construct a game 
+    public Game(String[] imagePaths, String backImagePath) {
         deck = new Deck(imagePaths, backImagePath);
         startTime = System.currentTimeMillis();
         matchCounter = 0;
-        matchCounterMax = (gridSize * gridSize) / 2;
+        matchCounterMax = (App.gridSize * App.gridSize) / 2;
     }
 
+    // Function to create the game board
     public GridPane createGameBoard(int gridSize) {
         GridPane gridPane = new GridPane();
         gridPane.setPadding(new javafx.geometry.Insets(10));
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setAlignment(javafx.geometry.Pos.CENTER);
-
+        
+        // Loop through the cards and add them to the grid
+        // Add an event handler to each card to handle clicks
         List<Card> cards = deck.getCards();
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
@@ -39,6 +43,7 @@ public class Game {
         return gridPane;
     }
 
+    // Logic of turning the card. 
     private void handleCardClick(Card card) {
         if (firstSelectedCard == null) {
             firstSelectedCard = card;
@@ -51,17 +56,22 @@ public class Game {
     }
 
     private void checkForMatch() {
+        // If the paths of the two selected cards are the same, they match
+        // if they match, set the cards to matched and reset the selected cards
         if (firstSelectedCard.getImagePath().equals(secondSelectedCard.getImagePath())) {
             firstSelectedCard.setMatched(true);
             secondSelectedCard.setMatched(true);
             firstSelectedCard = null;
             secondSelectedCard = null;
         } else {
-            // Flip the cards back after a short delay
+            // If the cards do not match, flip them back after a short delay
+            //  PauseTransition is a JavaFX class that pauses the transition for a specified duration
+            // 1 sec seems alright
             PauseTransition pause = new PauseTransition(Duration.seconds(1));
             pause.setOnFinished(e -> {
                 firstSelectedCard.flip();
                 secondSelectedCard.flip();
+                // Reset the selected cards
                 firstSelectedCard = null;
                 secondSelectedCard = null;
             });
@@ -72,4 +82,11 @@ public class Game {
     public void isGameOver() {
         
     }
+   /*  private void saveGameRecord() {
+        long endTime = System.currentTimeMillis();
+        long timeTaken = (endTime - startTime) / 1000; // in seconds
+        GameRecord record = new GameRecord(App.playerName, timeTaken, score);
+        GameRecordManager.saveRecord(record);
+    }
+    */
 }
