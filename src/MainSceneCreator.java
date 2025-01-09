@@ -16,7 +16,9 @@ public class MainSceneCreator extends SceneCreator {
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
 
+        // Create the title label
         Label titleLabel = new Label("Memory Game");
+        // Set the style of the title label to bold and font size 24 
         titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         Label nameLabel = new Label("Enter your name:");
@@ -30,6 +32,7 @@ public class MainSceneCreator extends SceneCreator {
             }
         });
 
+        // Handle the selection of difficulty and card type using a ComboBox for both
         Label difficultyLabel = new Label("Select difficulty:");
         ComboBox<String> difficultyComboBox = new ComboBox<>();
         difficultyComboBox.getItems().addAll("4x4 (Easy)", "8x8 (Medium)", "10x10 (Hard)");
@@ -39,6 +42,7 @@ public class MainSceneCreator extends SceneCreator {
         cardTypeComboBox.getItems().addAll("Tichu", "Unavailable", "Unavailable");
 
         Button startGameButton = new Button("Start Game");
+        // Upon the click of the start game button, set the globan GridSize.
         startGameButton.setOnAction(e -> {
             App.playerName = nameField.getText();
             String difficulty = difficultyComboBox.getValue();
