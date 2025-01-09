@@ -7,10 +7,20 @@ import java.util.Random;
 
 public class ImageManager {
     private static final String[] TICHU_IMAGES = {
-        "/img/tichu/Dragon.png", "/img/tichu/Hound.png", "/img/tichu/MahJong.png", "/img/tichu/Phoenix.png",
-        "/img/tichu/Dragon.png", "/img/tichu/Hound.png", "/img/tichu/MahJong.png", "/img/tichu/Phoenix.png",
-        "/img/tichu/Dragon.png", "/img/tichu/Hound.png", "/img/tichu/MahJong.png", "/img/tichu/Phoenix.png",
-        "/img/tichu/Dragon.png", "/img/tichu/Hound.png", "/img/tichu/MahJong.png", "/img/tichu/Phoenix.png"
+        "src/img/tichu/2black.png", "src/img/tichu/2blue.png", "src/img/tichu/2green.png", "src/img/tichu/2red.png",
+        "src/img/tichu/3black.png", "src/img/tichu/3blue.png", "src/img/tichu/3green.png", "src/img/tichu/3red.png",
+        "src/img/tichu/4black.png", "src/img/tichu/4blue.png", "src/img/tichu/4green.png", "src/img/tichu/4red.png",
+        "src/img/tichu/5black.png", "src/img/tichu/5blue.png", "src/img/tichu/5green.png", "src/img/tichu/5red.png",
+        "src/img/tichu/6black.png", "src/img/tichu/6blue.png", "src/img/tichu/6green.png", "src/img/tichu/6red.png",
+        "src/img/tichu/7black.png", "src/img/tichu/7blue.png", "src/img/tichu/7green.png", "src/img/tichu/7red.png",
+        "src/img/tichu/8black.png", "src/img/tichu/8blue.png", "src/img/tichu/8green.png", "src/img/tichu/8red.png",
+        "src/img/tichu/9black.png", "src/img/tichu/9blue.png", "src/img/tichu/9green.png", "src/img/tichu/9red.png",
+        "src/img/tichu/10black.png", "src/img/tichu/10blue.png", "src/img/tichu/10green.png", "src/img/tichu/10red.png",
+        "src/img/tichu/Jblack.png", "src/img/tichu/Jblue.png", "src/img/tichu/Jgreen.png", "src/img/tichu/Jred.png",
+        "src/img/tichu/Qblack.png", "src/img/tichu/Qblue.png", "src/img/tichu/Qgreen.png", "src/img/tichu/Qred.png",
+        "src/img/tichu/Kblack.png", "src/img/tichu/Kblue.png", "src/img/tichu/Kgreen.png", "src/img/tichu/Kred.png",
+        "src/img/tichu/Ablack.png", "src/img/tichu/Ablue.png", "src/img/tichu/Agreen.png", "src/img/tichu/Ared.png",
+        "src/img/tichu/Dragon.png", "src/img/tichu/Phoenix.png", "src/img/tichu/Hound.png", "src/img/tichu/MahJong.png",
     };
 
     private static final String[] TYPE2_IMAGES = {
