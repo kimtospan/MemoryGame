@@ -2,6 +2,8 @@ import javafx.scene.layout.GridPane;
 import java.util.List;
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 // Game logic
 public class Game {
     private Deck deck;
@@ -10,6 +12,14 @@ public class Game {
     private long startTime;
     private int matchCounter;
     private int matchCounterMax;
+    // Property to track the number of hidden cards
+    private IntegerProperty hiddenCardsCount;
+    // Property to track the number of unsuccessful attempts
+    private IntegerProperty unsuccessfulAttemptsCount;
+    // Property to track the number of remaining tries
+    private IntegerProperty remainingTries;
+    // Listener for card pair selections
+    private OnCardPairSelectedListener onCardPairSelectedListener;
 
     // Construct a game 
     public Game(String[] imagePaths, String backImagePath) {
@@ -17,6 +27,14 @@ public class Game {
         startTime = System.currentTimeMillis();
         matchCounter = 0;
         matchCounterMax = (App.gridSize * App.gridSize) / 2;
+        // Initialize hidden cards count
+        hiddenCardsCount = new SimpleIntegerProperty((App.gridSize * App.gridSize) );
+        // Initialize unsuccessful attempts count
+        unsuccessfulAttemptsCount = new SimpleIntegerProperty(0);
+        // Initialize remaining tries based on difficulty level
+        int baseTries = 10;
+        int additionalTries = (App.difficulty - 1) * 12;
+        remainingTries = new SimpleIntegerProperty(baseTries + additionalTries);
     }
 
     // Function to create the game board
@@ -46,7 +64,7 @@ public class Game {
     }
 
     // Logic of turning the card. 
-    private void handleCardClick(Card card) {
+       private void handleCardClick(Card card) {
         // If the card is already matched, do nothing
         if (card.isMatched()) {
             return;
@@ -55,21 +73,32 @@ public class Game {
             firstSelectedCard = card;
             System.out.println("Flip the first clicked card");
             firstSelectedCard.flip();
-            
+            if (firstSelectedCard instanceof Joker) {
+                System.out.println("First card is a joker, reset first selection");
+                firstSelectedCard = null;
+            }
         } else if (secondSelectedCard == null && card != firstSelectedCard) {
             secondSelectedCard = card;
             secondSelectedCard.flip();
             System.out.println("Flip the second clicked card");
-            checkForMatch();
+            if (secondSelectedCard instanceof Joker) {
+                System.out.println("Second card is a joker, reset selection");
+                firstSelectedCard = null;  
+                secondSelectedCard = null;
+            } else {
+                checkForMatch();
+            }
         }
     }
 
     private void checkForMatch() {
         if (firstSelectedCard instanceof Joker) {
+            System.out.println("First card is a joker");
             // If the first selected card is a Joker
+            hiddenCardsCount.set(hiddenCardsCount.get() - 1); // Decrease hidden cards count
             // Reset the first selected card
-          firstSelectedCard = null; 
-        System.out.println("First card was joker, reset first selection");
+            firstSelectedCard = null; 
+            System.out.println("First card was joker, reset first selection");
         } else if (secondSelectedCard instanceof Joker) {
             Joker jokerCard = (Joker) secondSelectedCard;
             if (firstSelectedCard.getImagePath().equals(jokerCard.getImagePath())) {
@@ -77,28 +106,40 @@ public class Game {
                 firstSelectedCard.setMatched(true);
                 secondSelectedCard.setMatched(true);
                 jokerCard.flipPair();
-                
-                firstSelectedCard = null;
-                secondSelectedCard = null;
-            }else {
-                // If the second selected card is a Joker, flip the associated pair and flip back the first card only if it's not the same image
-                if (!firstSelectedCard.getImagePath().equals(jokerCard.getImagePath())) {
-                    firstSelectedCard.flip();
-                    System.out.println("Second card is a joker, flip back first");
-                }
-                jokerCard.flipPair();
-                firstSelectedCard = null;
-                secondSelectedCard = null;
+                hiddenCardsCount.set(hiddenCardsCount.get() - 2); // Decrease hidden cards count
+                System.out.println("Match found with a joker");
+            } else {
+                // If the second selected card is a Joker but the first selected card does not have the same image
+                secondSelectedCard.flip(); // Flip the Joker card back
+                jokerCard.flipPair(); // Then flip the associated pair
+                System.out.println("Second card is a joker, no match found");
             }
+            firstSelectedCard = null;
+            secondSelectedCard = null;
+            
         } else if (firstSelectedCard.getImagePath().equals(secondSelectedCard.getImagePath())) {
             // If the paths of the two selected cards are the same, they match
             firstSelectedCard.setMatched(true);
             secondSelectedCard.setMatched(true);
+            hiddenCardsCount.set(hiddenCardsCount.get() - 2); // Decrease hidden cards count
+            // Notify listener
+            if (onCardPairSelectedListener != null) {
+                onCardPairSelectedListener.onCardPairSelected(hiddenCardsCount.get(), remainingTries.get());
+            }
             System.out.println("Matched");
             firstSelectedCard = null;
             secondSelectedCard = null;
         } else {
             // If the cards do not match, flip them back after a short delay
+            // Decrease remaining tries count
+            remainingTries.set(remainingTries.get() - 1);
+            if (remainingTries.get() <= 0) {
+                System.out.println("Game Over");
+                // Display "Game Over" and end the game
+                // You can add more logic here to handle the end of the game, such as disabling further clicks
+                // and showing a "Game Over" message to the user.
+                return;
+            }
             PauseTransition pause = new PauseTransition(Duration.seconds(1));
             pause.setOnFinished(e -> {
                 firstSelectedCard.flip();
@@ -107,10 +148,43 @@ public class Game {
                 System.out.println("Flip back after delay 2");
                 firstSelectedCard = null;
                 secondSelectedCard = null;
+                // Notify listener
+                if (onCardPairSelectedListener != null) {
+                    onCardPairSelectedListener.onCardPairSelected(hiddenCardsCount.get(), remainingTries.get());
+                }
             });
             pause.play();
         }
     }
+
+    // Return the number of hidden cards
+    public int getHiddenCardsCount() {
+        return hiddenCardsCount.get();
+    }
+    private int decreaseHiddenCardsCount() {
+        return hiddenCardsCount.get() - 1;
+    }
+
+    // Return the number of remaining tries
+    public int getRemainingTries() {
+        return remainingTries.get();
+    }
+
+    // Return the number of unsuccessful attempts
+    public int getUnsuccessfulAttemptsCount() {
+        return unsuccessfulAttemptsCount.get();
+    }
+
+    // Set the listener for card pair selections
+    public void setOnCardPairSelectedListener(OnCardPairSelectedListener listener) {
+        this.onCardPairSelectedListener = listener;
+    }
+
+    // Interface for the listener
+    public interface OnCardPairSelectedListener {
+        void onCardPairSelected(int hiddenCardsCount, int remainingTries);
+    }
+
     // Funcion to check if game is over by checking the value of the counter.
     public void isGameOver() {
         

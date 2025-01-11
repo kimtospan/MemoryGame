@@ -50,14 +50,17 @@ public class MainSceneCreator extends SceneCreator {
                 App.gridSize = 4;
                 App.CardWidth = 100;
                 App.CardHeight = 125;
+                App.difficulty = 1;
             } else if (difficulty.equals("8x8 (Medium)")) {
                 App.gridSize = 8;
                 App.CardWidth = 80;
                 App.CardHeight = 90;
+                App.difficulty = 2;
             } else if (difficulty.equals("10x10 (Hard)")) {
                 App.gridSize = 10;
                 App.CardWidth = 70;
                 App.CardHeight = 80;
+                App.difficulty = 3;
             }
             App.cardType = cardTypeComboBox.getValue();
 

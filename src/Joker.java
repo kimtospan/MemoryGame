@@ -43,6 +43,8 @@ public class Joker extends Card {
             // If they haven't been matched yet and are currently showing their back, flip them
             if (!card.isMatched() && card.getImageView().getImage().getUrl().endsWith(card.getBackImagePath())) {
                 card.flip();
+                
+                
                 System.out.println("Flip Pair in Joker");
                 card.setMatched(true);
             }
