@@ -6,6 +6,7 @@ import java.util.Random;
 
 
 public class ImageManager {
+    
     private static final String[] TICHU_IMAGES = {
         "/img/tichu/2black.png", "/img/tichu/2blue.png", "/img/tichu/2green.png", "/img/tichu/2red.png",
         "/img/tichu/3black.png", "/img/tichu/3blue.png", "/img/tichu/3green.png", "/img/tichu/3red.png",

@@ -1,5 +1,6 @@
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 
 // Represents a card in the game
 public class Card implements Flippable {
@@ -10,6 +11,8 @@ public class Card implements Flippable {
     private ImageView imageView;
     // Whether the card has been matched with another card
     private boolean isMatched;
+    //The pane holds the image view and allows the joker to stack a label on top of it
+    protected StackPane cardPane;
 
     public Card(String imagePath, String backImagePath) {
         this.imagePath = imagePath;
@@ -18,7 +21,12 @@ public class Card implements Flippable {
         this.imageView = new ImageView(new Image(getClass().getResource(backImagePath).toExternalForm()));
         this.imageView.setFitWidth(App.CardWidth);
         this.imageView.setFitHeight(App.CardHeight);
+        //I use stack pane so the child class Joker can stack the image view with a laber, the laber obviously being "Joker"
+        this.cardPane = new StackPane(imageView);
         this.isMatched = false;
+    }
+    public StackPane getCardPane() {
+        return cardPane;
     }
 
     public ImageView getImageView() {
@@ -27,10 +35,12 @@ public class Card implements Flippable {
 
     @Override
     public void flip() {
-        // When its time to flip the image, we check if the current image is the back image and turn.
+        // When its time to flip the image
+        //if the image is the back image, flip it to the front image
         if (imageView.getImage().getUrl().endsWith(backImagePath)) {
             imageView.setImage(new Image(getClass().getResource(imagePath).toExternalForm()));
         } else {
+            //if the image is the front image, flip it to the back image
             imageView.setImage(new Image(getClass().getResource(backImagePath).toExternalForm()));
         }
     }
@@ -45,5 +55,8 @@ public class Card implements Flippable {
 
     public String getImagePath() {
         return imagePath;
+    }
+    public String getBackImagePath() {
+        return backImagePath;
     }
 }
