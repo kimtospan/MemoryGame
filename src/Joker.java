@@ -14,7 +14,8 @@ public class Joker extends Card {
         // Initialize the label to indicate this is a Joker card
         jokerLabel = new Label("JOKER");
         // Hardly visible so make it RED
-        jokerLabel.setStyle("-fx-text-fill: red;");
+        // Red bold text FOR THE JOOOOKEEERRR ok 
+        jokerLabel.setStyle("-fx-text-fill: red; -fx-font-size: 20px; -fx-font-weight: bold;");
         
         jokerLabel.setVisible(false); // Initially hide the label
         getCardPane().getChildren().add(jokerLabel); // Add the label to the card pane

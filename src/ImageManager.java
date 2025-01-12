@@ -24,8 +24,20 @@ public class ImageManager {
         "/img/tichu/Dragon.png", "/img/tichu/Phoenix.png", "/img/tichu/Hound.png", "/img/tichu/MahJong.png",
     };
 
-    private static final String[] TYPE2_IMAGES = {
-        
+    private static final String[] VINTAGE_IMAGES = {
+        "/img/vintage/Vintage2Club.png", "/img/vintage/Vintage2Diamond.png", "/img/vintage/Vintage2Heart.png", "/img/vintage/Vintage2Spade.png", 
+        "/img/vintage/Vintage3Club.png", "/img/vintage/Vintage3Diamond.png", "/img/vintage/Vintage3Heart.png", "/img/vintage/Vintage3Spade.png",
+        "/img/vintage/Vintage4Club.png", "/img/vintage/Vintage4Diamond.png", "/img/vintage/Vintage4Heart.png", "/img/vintage/Vintage4Spade.png",
+        "/img/vintage/Vintage5Club.png", "/img/vintage/Vintage5Diamond.png", "/img/vintage/Vintage5Heart.png", "/img/vintage/Vintage5Spade.png",
+        "/img/vintage/Vintage6Club.png", "/img/vintage/Vintage6Diamond.png", "/img/vintage/Vintage6Heart.png", "/img/vintage/Vintage6Spade.png",
+        "/img/vintage/Vintage7Club.png", "/img/vintage/Vintage7Diamond.png", "/img/vintage/Vintage7Heart.png", "/img/vintage/Vintage7Spade.png",
+        "/img/vintage/Vintage8Club.png", "/img/vintage/Vintage8Diamond.png", "/img/vintage/Vintage8Heart.png", "/img/vintage/Vintage8Spade.png",
+        "/img/vintage/Vintage9Club.png", "/img/vintage/Vintage9Diamond.png", "/img/vintage/Vintage9Heart.png", "/img/vintage/Vintage9Spade.png",
+        "/img/vintage/Vintage10Club.png", "/img/vintage/Vintage10Diamond.png", "/img/vintage/Vintage10Heart.png", "/img/vintage/Vintage10Spade.png",
+        "/img/vintage/VintageJClub.png", "/img/vintage/VintageJDiamond.png", "/img/vintage/VintageJHeart.png", "/img/vintage/VintageJSpade.png",
+        "/img/vintage/VintageQClub.png", "/img/vintage/VintageQDiamond.png", "/img/vintage/VintageQHeart.png", "/img/vintage/VintageQSpade.png",
+        "/img/vintage/VintageKClub.png", "/img/vintage/VintageKDiamond.png", "/img/vintage/VintageKHeart.png", "/img/vintage/VintageKSpade.png",
+        "/img/vintage/VintageAClub.png", "/img/vintage/VintageADiamond.png", "/img/vintage/VintageAHeart.png", "/img/vintage/VintageASpade.png"
     };
 
     private static final String[] TYPE3_IMAGES = {
@@ -33,7 +45,7 @@ public class ImageManager {
     };
 
     private static final String TICHU_BACK_IMAGE = "/img/tichu/back.png";
-    private static final String TYPE2_BACK_IMAGE = "/img/type2/back.png";
+    private static final String VINTAGE_BACK_IMAGE = "/img/vintage/VintageBack.png";
     private static final String TYPE3_BACK_IMAGE = "/img/type3/back.png";
 
 
@@ -43,7 +55,7 @@ public class ImageManager {
             case "Tichu":
                 return TICHU_IMAGES;
             case "Type 2":
-                return TYPE2_IMAGES;
+                return VINTAGE_IMAGES;
             case "Type 3":
                 return TYPE3_IMAGES;
             default:
@@ -55,8 +67,8 @@ public class ImageManager {
         switch (cardType) {
             case "Tichu":
                 return TICHU_BACK_IMAGE;
-            case "Type 2":
-                return TYPE2_BACK_IMAGE;
+            case "Vintage":
+                return VINTAGE_BACK_IMAGE;
             case "Type 3":
                 return TYPE3_BACK_IMAGE;
             default:
