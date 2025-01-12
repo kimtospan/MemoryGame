@@ -1,5 +1,5 @@
-1) About us
-2) Info about the game
+1) About us  -  done
+2) Info about the game - 
 3) Exit on main scene
 4) Show previous players record
 5) Keep record
