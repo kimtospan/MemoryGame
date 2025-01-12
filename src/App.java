@@ -14,6 +14,7 @@ public class App extends Application {
     public static int CardWidth = 100;
     public static int CardHeight = 125;
     public static long startTime;
+    public static long endTime;
     public static void main(String[] args) throws Exception {
         launch(args);
     }

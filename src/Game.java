@@ -9,8 +9,9 @@ public class Game {
     private Deck deck;
     private Card firstSelectedCard;
     private Card secondSelectedCard;
-    private long startTime;
     
+    private int multiplier = 1;
+    private IntegerProperty score;  
     // Property to track the number of hidden cards
     private IntegerProperty hiddenCardsCount;
     // Property to track the number of unsuccessful attempts
@@ -23,7 +24,7 @@ public class Game {
     // Construct a game 
     public Game(String[] imagePaths, String backImagePath) {
         deck = new Deck(imagePaths, backImagePath);
-        startTime = System.currentTimeMillis();
+        
         
         // Initialize hidden cards count
         hiddenCardsCount = new SimpleIntegerProperty((App.gridSize * App.gridSize) );
@@ -33,6 +34,8 @@ public class Game {
         int baseTries = 10;
         int additionalTries = (App.difficulty - 1) * 12;
         remainingTries = new SimpleIntegerProperty(baseTries + additionalTries);
+        // Initialize score
+        score = new SimpleIntegerProperty(0);
     }
 
     // Function to create the game board
@@ -89,19 +92,28 @@ public class Game {
 
     private void checkForMatch() {
         if (firstSelectedCard.getImagePath().equals(secondSelectedCard.getImagePath())) {
+            // If matched
+            // Increase score by 25 points, integer property to show the score
+            score.set(score.get() + multiplier * 25); 
+
+
+            multiplier = multiplier * 2 ;
             // If the paths of the two selected cards are the same, they match
             firstSelectedCard.setMatched(true);
             secondSelectedCard.setMatched(true);
             hiddenCardsCount.set(hiddenCardsCount.get() - 2); // Decrease hidden cards count
             // Notify listener
             if (onCardPairSelectedListener != null) {
-                onCardPairSelectedListener.onCardPairSelected(hiddenCardsCount.get(), remainingTries.get());
+                onCardPairSelectedListener.onCardPairSelected(hiddenCardsCount.get(), remainingTries.get(), score.get());
             }
             System.out.println("Matched");
             firstSelectedCard = null;
             secondSelectedCard = null;
         } else {
             // If the cards do not match, flip them back after a short delay
+            // Reset multiplier on unsuccessful attempt
+            multiplier = 1;
+
             // Decrease remaining tries count
             remainingTries.set(remainingTries.get() - 1);
             if (remainingTries.get() <= 0) {
@@ -122,16 +134,22 @@ public class Game {
                 secondSelectedCard = null;
                 // Notify listener
                 if (onCardPairSelectedListener != null) {
-                    onCardPairSelectedListener.onCardPairSelected(hiddenCardsCount.get(), remainingTries.get());
+                    onCardPairSelectedListener.onCardPairSelected(hiddenCardsCount.get(), remainingTries.get(), score.get());
                 }
             });
             pause.play();
         }
     }
 
-    private void handleJokerMatch() {
+    private void handleJokerMatch() { 
+        // Increase score and multiplier. 
+        score.set(score.get() + multiplier * 25);
+
+        multiplier = multiplier * 2;
         // Since the function is called only whe a joker is clicked
         // Decrease the hidden cards count by 3 (joker and its pair)
+
+       
         hiddenCardsCount.set(hiddenCardsCount.get() - 3);
         System.out.println("Entered Joker Match");
         if (firstSelectedCard instanceof Joker) {
@@ -159,23 +177,45 @@ public class Game {
             secondSelectedCard = null;
         }
 
+
+
+
+
+
+
+
         if (hiddenCardsCount.get() <= 0) {
             saveGameRecord();
         }
 
         // Notify listener
         if (onCardPairSelectedListener != null) {
-            onCardPairSelectedListener.onCardPairSelected(hiddenCardsCount.get(), remainingTries.get());
+            onCardPairSelectedListener.onCardPairSelected(hiddenCardsCount.get(), remainingTries.get(), score.get());
         }
         
 
     }
+
+// Function to start time
+    public void startTimer() {
+        App.startTime = System.currentTimeMillis();
+    }
+    private void stopTimer() {
+        App.endTime = System.currentTimeMillis();
+    }
+
+
+
+
 
     private void saveGameRecord() {
         long endTime = System.currentTimeMillis();
         long timeTaken = (endTime - App.startTime) / 1000; // in seconds
         GameRecord record = new GameRecord(App.playerName, timeTaken, App.difficulty);
         //GameRecordManager.saveRecord(record);
+    }
+    public int getScore() {
+        return score.get();
     }
 
     // Return the number of hidden cards
@@ -203,11 +243,16 @@ public class Game {
 
     // Interface for the listener
     public interface OnCardPairSelectedListener {
-        void onCardPairSelected(int hiddenCardsCount, int remainingTries);
+        void onCardPairSelected(int hiddenCardsCount, int remainingTries, int score);
     }
-
+    
     // Funcion to check if game is over by checking the value of the counter.
     public void isGameOver() {
+        if (hiddenCardsCount.get() <= 0) {
+            stopTimer();
+            
+            saveGameRecord();
+        }
         
     }
    /*  private void saveGameRecord() {

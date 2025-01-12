@@ -18,6 +18,7 @@ public class GameSceneCreator extends SceneCreator {
         String backImagePath = ImageManager.getBackImage(App.cardType);
         int gridSize = App.gridSize; // Get the grid size from the App class
 
+
         // Generate the required number of card pairs
         String[] selectedImagesSubset = ImageManager.generateCardPairs(selectedImages, (gridSize * gridSize) / 2);
 
@@ -33,6 +34,12 @@ public class GameSceneCreator extends SceneCreator {
         Label elapsedTimeLabel = new Label("Elapsed Time: 0s");
         elapsedTimeLabel.setStyle("-fx-font-size: 16px;");
 
+        Label scoreLabel = new Label("Score: " + game.getScore());
+        scoreLabel.setStyle("-fx-font-size: 16px;");
+
+        //When scene begins, start the global startTimer
+        game.startTimer();
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -42,14 +49,20 @@ public class GameSceneCreator extends SceneCreator {
         };
         timer.start();
 
-        game.setOnCardPairSelectedListener((hiddenCardsCount, remainingTries) -> {
+        game.setOnCardPairSelectedListener((hiddenCardsCount, remainingTries, score) -> {
             hiddenCardsLabel.setText("Hidden Cards: " + hiddenCardsCount);
             remainingTriesLabel.setText("Remaining Tries: " + remainingTries);
+            scoreLabel.setText("Score: " + score);
+            //
+            if (hiddenCardsCount <= 0 || remainingTries <= 0) {
+                timer.stop(); // Stop the timer when the game is over
+            }
+
         });
 
         VBox infoBox = new VBox(10);
         infoBox.setAlignment(Pos.CENTER_LEFT);
-        infoBox.getChildren().addAll(hiddenCardsLabel, remainingTriesLabel, elapsedTimeLabel);
+        infoBox.getChildren().addAll(hiddenCardsLabel, remainingTriesLabel, elapsedTimeLabel, scoreLabel);
 
         VBox gameBox = new VBox(10);
         gameBox.setAlignment(Pos.CENTER);
@@ -75,4 +88,5 @@ public class GameSceneCreator extends SceneCreator {
         layout.getChildren().addAll(goBackButton, exitButton);
         return new Scene(layout, getWidth(), getHeight());
     }
+    
 }
