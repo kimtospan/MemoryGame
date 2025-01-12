@@ -106,6 +106,7 @@ public class Game {
             remainingTries.set(remainingTries.get() - 1);
             if (remainingTries.get() <= 0) {
                 System.out.println("Game Over");
+                saveGameRecord();
                 // Display "Game Over" and end the game
                 // You can add more logic here to handle the end of the game, such as disabling further clicks
                 // and showing a "Game Over" message to the user.
@@ -158,12 +159,23 @@ public class Game {
             secondSelectedCard = null;
         }
 
+        if (hiddenCardsCount.get() <= 0) {
+            saveGameRecord();
+        }
+
         // Notify listener
         if (onCardPairSelectedListener != null) {
             onCardPairSelectedListener.onCardPairSelected(hiddenCardsCount.get(), remainingTries.get());
         }
         
 
+    }
+
+    private void saveGameRecord() {
+        long endTime = System.currentTimeMillis();
+        long timeTaken = (endTime - App.startTime) / 1000; // in seconds
+        GameRecord record = new GameRecord(App.playerName, timeTaken, App.difficulty);
+        //GameRecordManager.saveRecord(record);
     }
 
     // Return the number of hidden cards

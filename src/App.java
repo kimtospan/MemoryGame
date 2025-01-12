@@ -13,6 +13,7 @@ public class App extends Application {
     // To make sure its not different, put it here.
     public static int CardWidth = 100;
     public static int CardHeight = 125;
+    public static long startTime;
     public static void main(String[] args) throws Exception {
         launch(args);
     }

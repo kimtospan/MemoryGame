@@ -68,6 +68,7 @@ public class MainSceneCreator extends SceneCreator {
             App.gameScene = gameSceneCreator.createScene();
             App.primaryStage.setScene(App.gameScene);
             App.primaryStage.setTitle("Game Scene");
+            App.startTime = System.currentTimeMillis(); // Start the timer
         });
 
         layout.getChildren().addAll(titleLabel, nameLabel, nameField, difficultyLabel, difficultyComboBox, cardTypeLabel, cardTypeComboBox, startGameButton);

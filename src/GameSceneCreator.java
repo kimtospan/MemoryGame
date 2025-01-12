@@ -4,6 +4,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
+import javafx.animation.AnimationTimer;
 
 public class GameSceneCreator extends SceneCreator {
 
@@ -29,6 +30,18 @@ public class GameSceneCreator extends SceneCreator {
         Label remainingTriesLabel = new Label("Remaining Tries: " + game.getRemainingTries());
         remainingTriesLabel.setStyle("-fx-font-size: 16px;");
 
+        Label elapsedTimeLabel = new Label("Elapsed Time: 0s");
+        elapsedTimeLabel.setStyle("-fx-font-size: 16px;");
+
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                long elapsedTime = (System.currentTimeMillis() - App.startTime) / 1000;
+                elapsedTimeLabel.setText("Elapsed Time: " + elapsedTime + "s");
+            }
+        };
+        timer.start();
+
         game.setOnCardPairSelectedListener((hiddenCardsCount, remainingTries) -> {
             hiddenCardsLabel.setText("Hidden Cards: " + hiddenCardsCount);
             remainingTriesLabel.setText("Remaining Tries: " + remainingTries);
@@ -36,7 +49,7 @@ public class GameSceneCreator extends SceneCreator {
 
         VBox infoBox = new VBox(10);
         infoBox.setAlignment(Pos.CENTER_LEFT);
-        infoBox.getChildren().addAll(hiddenCardsLabel, remainingTriesLabel);
+        infoBox.getChildren().addAll(hiddenCardsLabel, remainingTriesLabel, elapsedTimeLabel);
 
         VBox gameBox = new VBox(10);
         gameBox.setAlignment(Pos.CENTER);
