@@ -39,7 +39,7 @@ public class MainSceneCreator extends SceneCreator {
 
         Label cardTypeLabel = new Label("Select card type:");
         ComboBox<String> cardTypeComboBox = new ComboBox<>();
-        cardTypeComboBox.getItems().addAll("Tichu", "Unavailable", "Unavailable");
+        cardTypeComboBox.getItems().addAll("Tichu", "Vintage", "Unavailable");
 
         Button startGameButton = new Button("Start Game");
         // Upon the click of the start game button, set the globan GridSize.

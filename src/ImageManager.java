@@ -21,7 +21,7 @@ public class ImageManager {
         "/img/tichu/Qblack.png", "/img/tichu/Qblue.png", "/img/tichu/Qgreen.png", "/img/tichu/Qred.png",
         "/img/tichu/Kblack.png", "/img/tichu/Kblue.png", "/img/tichu/Kgreen.png", "/img/tichu/Kred.png",
         "/img/tichu/Ablack.png", "/img/tichu/Ablue.png", "/img/tichu/Agreen.png", "/img/tichu/Ared.png",
-        "/img/tichu/Dragon.png", "/img/tichu/Phoenix.png", "/img/tichu/Hound.png", "/img/tichu/MahJong.png",
+        "/img/tichu/Dragon.png", "/img/tichu/Phoenix.png", "/img/tichu/Hound.png", "/img/tichu/MahJong.png"
     };
 
     private static final String[] VINTAGE_IMAGES = {
@@ -54,7 +54,7 @@ public class ImageManager {
         switch (cardType) {
             case "Tichu":
                 return TICHU_IMAGES;
-            case "Type 2":
+            case "Vintage":
                 return VINTAGE_IMAGES;
             case "Type 3":
                 return TYPE3_IMAGES;
