@@ -10,8 +10,7 @@ public class Game {
     private Card firstSelectedCard;
     private Card secondSelectedCard;
     private long startTime;
-    private int matchCounter;
-    private int matchCounterMax;
+    
     // Property to track the number of hidden cards
     private IntegerProperty hiddenCardsCount;
     // Property to track the number of unsuccessful attempts
@@ -25,8 +24,7 @@ public class Game {
     public Game(String[] imagePaths, String backImagePath) {
         deck = new Deck(imagePaths, backImagePath);
         startTime = System.currentTimeMillis();
-        matchCounter = 0;
-        matchCounterMax = (App.gridSize * App.gridSize) / 2;
+        
         // Initialize hidden cards count
         hiddenCardsCount = new SimpleIntegerProperty((App.gridSize * App.gridSize) );
         // Initialize unsuccessful attempts count
@@ -131,6 +129,10 @@ public class Game {
     }
 
     private void handleJokerMatch() {
+        // Since the function is called only whe a joker is clicked
+        // Decrease the hidden cards count by 3 (joker and its pair)
+        hiddenCardsCount.set(hiddenCardsCount.get() - 3);
+        System.out.println("Entered Joker Match");
         if (firstSelectedCard instanceof Joker) {
             System.out.println("First card is a joker, reset first selection");
             // Reset the clicks
@@ -160,9 +162,7 @@ public class Game {
         if (onCardPairSelectedListener != null) {
             onCardPairSelectedListener.onCardPairSelected(hiddenCardsCount.get(), remainingTries.get());
         }
-        // Since the function is called only whe a joker is clicked
-        // Decrease the hidden cards count by 3 (joker and its pair)
-        hiddenCardsCount.set(hiddenCardsCount.get() - 3);
+        
 
     }
 

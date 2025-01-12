@@ -40,13 +40,25 @@ public class ImageManager {
         "/img/vintage/VintageAClub.png", "/img/vintage/VintageADiamond.png", "/img/vintage/VintageAHeart.png", "/img/vintage/VintageASpade.png"
     };
 
-    private static final String[] TYPE3_IMAGES = {
-       
+    private static final String[] CLASSIC_IMAGES = {
+       "/img/classic/Classic2Club.png", "/img/classic/Classic2Diamond.png", "/img/classic/Classic2Heart.png", "/img/classic/Classic2Spade.png",
+       "/img/classic/Classic3Club.png", "/img/classic/Classic3Diamond.png", "/img/classic/Classic3Heart.png", "/img/classic/Classic3Spade.png",
+       "/img/classic/Classic4Club.png", "/img/classic/Classic4Diamond.png", "/img/classic/Classic4Heart.png", "/img/classic/Classic4Spade.png",
+       "/img/classic/Classic5Club.png", "/img/classic/Classic5Diamond.png", "/img/classic/Classic5Heart.png", "/img/classic/Classic5Spade.png",
+       "/img/classic/Classic6Club.png", "/img/classic/Classic6Diamond.png", "/img/classic/Classic6Heart.png", "/img/classic/Classic6Spade.png",
+       "/img/classic/Classic7Club.png", "/img/classic/Classic7Diamond.png", "/img/classic/Classic7Heart.png", "/img/classic/Classic7Spade.png",
+       "/img/classic/Classic8Club.png", "/img/classic/Classic8Diamond.png", "/img/classic/Classic8Heart.png", "/img/classic/Classic8Spade.png",
+       "/img/classic/Classic9Club.png", "/img/classic/Classic9Diamond.png", "/img/classic/Classic9Heart.png", "/img/classic/Classic9Spade.png",
+       "/img/classic/Classic10Club.png", "/img/classic/Classic10Diamond.png", "/img/classic/Classic10Heart.png", "/img/classic/Classic10Spade.png",
+       "/img/classic/ClassicJClub.png", "/img/classic/ClassicJDiamond.png", "/img/classic/ClassicJHeart.png", "/img/classic/ClassicJSpade.png",
+       "/img/classic/ClassicQClub.png", "/img/classic/ClassicQDiamond.png", "/img/classic/ClassicQHeart.png", "/img/classic/ClassicQSpade.png",
+       "/img/classic/ClassicKClub.png", "/img/classic/ClassicKDiamond.png", "/img/classic/ClassicKHeart.png", "/img/classic/ClassicKSpade.png",
+       "/img/classic/ClassicAClub.png", "/img/classic/ClassicADiamond.png", "/img/classic/ClassicAHeart.png", "/img/classic/ClassicASpade.png", 
     };
 
     private static final String TICHU_BACK_IMAGE = "/img/tichu/back.png";
     private static final String VINTAGE_BACK_IMAGE = "/img/vintage/VintageBack.png";
-    private static final String TYPE3_BACK_IMAGE = "/img/type3/back.png";
+    private static final String CLASSIC_BACK_IMAGE = "/img/classic/ClassicBack.png";
 
 
 
@@ -56,8 +68,8 @@ public class ImageManager {
                 return TICHU_IMAGES;
             case "Vintage":
                 return VINTAGE_IMAGES;
-            case "Type 3":
-                return TYPE3_IMAGES;
+            case "Classic":
+                return CLASSIC_IMAGES;
             default:
                 return TICHU_IMAGES; // Default to Tichu if no valid selection
         }
@@ -69,8 +81,8 @@ public class ImageManager {
                 return TICHU_BACK_IMAGE;
             case "Vintage":
                 return VINTAGE_BACK_IMAGE;
-            case "Type 3":
-                return TYPE3_BACK_IMAGE;
+            case "Classic":
+                return CLASSIC_BACK_IMAGE;
             default:
                 return TICHU_BACK_IMAGE; // Default to Tichu if no valid selection
         }
