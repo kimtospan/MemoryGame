@@ -1,14 +1,15 @@
 //Represents a game record, cosisting of the player.name, date, timeToCompletion and score
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
+// Class defining a game record and what a game record is and can do
+// Managing the records, like saving and loading, is done in GameRecordManager
 public class GameRecord {
     private String username;
     private LocalDateTime dateTime;
     private long timeToCompletion; // in seconds
     private int score;
 
-    // This is what a game record is.
+    // represents a game record
     public GameRecord(String username, long timeToCompletion, int score) {
         this.username = username;
         this.dateTime = LocalDateTime.now();
