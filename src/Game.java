@@ -114,16 +114,7 @@ public class Game {
             // Reset multiplier on unsuccessful attempt
             multiplier = 1;
 
-            // Decrease remaining tries count
-            remainingTries.set(remainingTries.get() - 1);
-            if (remainingTries.get() <= 0) {
-                System.out.println("Game Over");
-                saveGameRecord();
-                // Display "Game Over" and end the game
-                // You can add more logic here to handle the end of the game, such as disabling further clicks
-                // and showing a "Game Over" message to the user.
-                return;
-            }
+            
             PauseTransition pause = new PauseTransition(Duration.seconds(1));
             pause.setOnFinished(e -> {
                 firstSelectedCard.flip();
@@ -138,6 +129,9 @@ public class Game {
                 }
             });
             pause.play();
+            // Decrease remaining tries count
+            remainingTries.set(remainingTries.get() - 1);
+            isGameOver();
         }
     }
 
@@ -248,7 +242,7 @@ public class Game {
     
     // Funcion to check if game is over by checking the value of the counter.
     public void isGameOver() {
-        if (hiddenCardsCount.get() <= 0) {
+        if (hiddenCardsCount.get() <= 0 || remainingTries.get() <= 0) {
             stopTimer();
             
             saveGameRecord();

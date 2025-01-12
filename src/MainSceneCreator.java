@@ -4,6 +4,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.stage.Modality;
+import javafx.scene.layout.StackPane;
 import javafx.geometry.Pos;
 
 public class MainSceneCreator extends SceneCreator {
@@ -68,10 +71,29 @@ public class MainSceneCreator extends SceneCreator {
             App.gameScene = gameSceneCreator.createScene();
             App.primaryStage.setScene(App.gameScene);
             App.primaryStage.setTitle("Game Scene");
-            App.startTime = System.currentTimeMillis(); // Start the timer
+            
         });
 
-        layout.getChildren().addAll(titleLabel, nameLabel, nameField, difficultyLabel, difficultyComboBox, cardTypeLabel, cardTypeComboBox, startGameButton);
+        Button aboutButton = new Button("About");
+        aboutButton.setOnAction(e -> {
+            Stage aboutStage = new Stage();
+            //Modality will block actions on other windows while the about window is open
+            aboutStage.initModality(Modality.APPLICATION_MODAL);
+            aboutStage.setTitle("About");
+
+            Label aboutLabel = new Label("Made by Vasiliadis Dimitrios and Salamalikis Panagiotis as a class project for \"Object-Oriented Programming 2\"");
+            aboutLabel.setWrapText(true);
+            aboutLabel.setStyle("-fx-padding: 10px;");
+
+            StackPane aboutLayout = new StackPane();
+            aboutLayout.getChildren().add(aboutLabel);
+
+            Scene aboutScene = new Scene(aboutLayout, 400, 200);
+            aboutStage.setScene(aboutScene);
+            aboutStage.showAndWait();
+        });
+
+        layout.getChildren().addAll(titleLabel, nameLabel, nameField, difficultyLabel, difficultyComboBox, cardTypeLabel, cardTypeComboBox, startGameButton, aboutButton);
         return new Scene(layout, getWidth(), getHeight());
     }
 }
