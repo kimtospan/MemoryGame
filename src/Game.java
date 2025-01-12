@@ -64,7 +64,8 @@ public class Game {
     }
 
     // Logic of turning the card. 
-       private void handleCardClick(Card card) {
+    //If either card is a joker, call handleJokerMatch(), else call checkForMatch()
+    private void handleCardClick(Card card) {
         // If the card is already matched, do nothing
         if (card.isMatched()) {
             return;
@@ -74,17 +75,14 @@ public class Game {
             System.out.println("Flip the first clicked card");
             firstSelectedCard.flip();
             if (firstSelectedCard instanceof Joker) {
-                System.out.println("First card is a joker, reset first selection");
-                firstSelectedCard = null;
+                handleJokerMatch();
             }
         } else if (secondSelectedCard == null && card != firstSelectedCard) {
             secondSelectedCard = card;
             secondSelectedCard.flip();
             System.out.println("Flip the second clicked card");
             if (secondSelectedCard instanceof Joker) {
-                System.out.println("Second card is a joker, reset selection");
-                firstSelectedCard = null;  
-                secondSelectedCard = null;
+                handleJokerMatch();
             } else {
                 checkForMatch();
             }
@@ -92,32 +90,7 @@ public class Game {
     }
 
     private void checkForMatch() {
-        if (firstSelectedCard instanceof Joker) {
-            System.out.println("First card is a joker");
-            // If the first selected card is a Joker
-            hiddenCardsCount.set(hiddenCardsCount.get() - 1); // Decrease hidden cards count
-            // Reset the first selected card
-            firstSelectedCard = null; 
-            System.out.println("First card was joker, reset first selection");
-        } else if (secondSelectedCard instanceof Joker) {
-            Joker jokerCard = (Joker) secondSelectedCard;
-            if (firstSelectedCard.getImagePath().equals(jokerCard.getImagePath())) {
-                // If the second selected card is a Joker and the first selected card has the same image as the Joker
-                firstSelectedCard.setMatched(true);
-                secondSelectedCard.setMatched(true);
-                jokerCard.flipPair();
-                hiddenCardsCount.set(hiddenCardsCount.get() - 2); // Decrease hidden cards count
-                System.out.println("Match found with a joker");
-            } else {
-                // If the second selected card is a Joker but the first selected card does not have the same image
-                secondSelectedCard.flip(); // Flip the Joker card back
-                jokerCard.flipPair(); // Then flip the associated pair
-                System.out.println("Second card is a joker, no match found");
-            }
-            firstSelectedCard = null;
-            secondSelectedCard = null;
-            
-        } else if (firstSelectedCard.getImagePath().equals(secondSelectedCard.getImagePath())) {
+        if (firstSelectedCard.getImagePath().equals(secondSelectedCard.getImagePath())) {
             // If the paths of the two selected cards are the same, they match
             firstSelectedCard.setMatched(true);
             secondSelectedCard.setMatched(true);
@@ -155,6 +128,42 @@ public class Game {
             });
             pause.play();
         }
+    }
+
+    private void handleJokerMatch() {
+        if (firstSelectedCard instanceof Joker) {
+            System.out.println("First card is a joker, reset first selection");
+            // Reset the clicks
+            firstSelectedCard = null; 
+            
+        } else if (secondSelectedCard instanceof Joker) {
+            Joker jokerCard = (Joker) secondSelectedCard;
+            if (firstSelectedCard.getImagePath().equals(jokerCard.getImagePath())) {
+                // If the second selected card is a Joker and the first selected card has the same image as the Joker
+                firstSelectedCard.setMatched(true);
+                secondSelectedCard.setMatched(true);
+                
+                 
+                System.out.println("Match found with a joker");
+            } else {
+                // If the second selected card is a Joker but the first selected card does not have the same image
+                firstSelectedCard.flip(); // Flip the first card back
+                
+                System.out.println("Second card is a joker, no match found");
+            }
+
+            firstSelectedCard = null;
+            secondSelectedCard = null;
+        }
+
+        // Notify listener
+        if (onCardPairSelectedListener != null) {
+            onCardPairSelectedListener.onCardPairSelected(hiddenCardsCount.get(), remainingTries.get());
+        }
+        // Since the function is called only whe a joker is clicked
+        // Decrease the hidden cards count by 3 (joker and its pair)
+        hiddenCardsCount.set(hiddenCardsCount.get() - 3);
+
     }
 
     // Return the number of hidden cards
