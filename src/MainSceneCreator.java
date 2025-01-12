@@ -131,7 +131,13 @@ public class MainSceneCreator extends SceneCreator {
             aboutStage.showAndWait();
         });
 
-        layout.getChildren().addAll(titleBox, nameLabel, nameField, difficultyLabel, difficultyComboBox, cardTypeLabel, cardTypeComboBox, startGameButton, aboutButton);
+        // The exit button
+        Button exitButton = new Button("Exit");
+        exitButton.setOnAction(e -> {
+            App.primaryStage.close();
+        });
+
+        layout.getChildren().addAll(titleBox, nameLabel, nameField, difficultyLabel, difficultyComboBox, cardTypeLabel, cardTypeComboBox, startGameButton, aboutButton, exitButton);
         return new Scene(layout, getWidth(), getHeight());
     }
 }
