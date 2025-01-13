@@ -6,14 +6,14 @@ import java.util.Random;
 // Represents a deck of cards
 public class Deck {
     private List<Card> cards;
-    private Game game;
+    
 
     public Deck(String[] imagePaths, String backImagePath, Game game) {
         cards = new ArrayList<>();
         List<String> availableImages = new ArrayList<>();
         Collections.addAll(availableImages, imagePaths);
         Collections.shuffle(availableImages, new Random());
-        this.game = game;
+        
         
 
         int numPairs = (App.gridSize * App.gridSize) / 2 - 1; // Subtract a pair for the 2 Jokers
