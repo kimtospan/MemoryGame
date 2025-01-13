@@ -17,6 +17,7 @@ public class GameRecordManager {
     public static void saveRecord(String username, long elapsedTime, int score) {
         GameRecord record = new GameRecord(username, elapsedTime, score);
         // Save a record using BufferedWriter
+        System.out.println("Saving record: " + record.fromGameRecordToCSV());
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
             writer.write(record.fromGameRecordToCSV());
             writer.newLine();
@@ -27,6 +28,7 @@ public class GameRecordManager {
 
     // Load all game records from the CSV file
     public static List<GameRecord> loadRecords() {
+        System.out.println("Loading records");
         // Create a list of game records to save them 
         List<GameRecord> records = new ArrayList<>();
         //try catch to show we know how

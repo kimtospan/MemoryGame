@@ -10,7 +10,7 @@ public class GameRecord {
     private int score;
 
     // represents a game record
-    public GameRecord(String username, long elasedTime, int score) {
+    public GameRecord(String username, long elapsedTime, int score) {
         this.username = username;
         this.dateTime = LocalDateTime.now();
         this.elapsedTime = elapsedTime;

@@ -116,6 +116,7 @@ public class Game {
             System.out.println("Matched");
             firstSelectedCard = null;
             secondSelectedCard = null;
+            isGameOver();
         } else {
             // If the cards do not match, flip them back after a short delay
             // Reset multiplier on unsuccessful attempt
@@ -138,7 +139,7 @@ public class Game {
             pause.play();
             // Decrease remaining tries count
             remainingTries.set(remainingTries.get() - 1);
-            isGameOver();
+            
         }
     }
 
@@ -183,7 +184,7 @@ public class Game {
             onCardPairSelectedListener.onCardPairSelected(hiddenCardsCount.get(), remainingTries.get(), score.get());
         }
         
-
+        isGameOver();
     }
 
 
@@ -254,18 +255,14 @@ public class Game {
     
     // Funcion to check if game is over by checking the value of the counter.
     public void isGameOver() {
+        System.out.println("Checking if game is over");
         if (hiddenCardsCount.get() <= 0 || remainingTries.get() <= 0) {
+            System.out.println("Game over");
             stopTimer();
             
             GameRecordManager.saveRecord(App.playerName, getElapsedTime(), score.get());
         }
         
     }
-   /*  private void saveGameRecord() {
-        long endTime = System.currentTimeMillis();
-        long timeTaken = (endTime - startTime) / 1000; // in seconds
-        GameRecord record = new GameRecord(App.playerName, timeTaken, score);
-        GameRecordManager.saveRecord(record);
-    }
-    */
+   
 }
