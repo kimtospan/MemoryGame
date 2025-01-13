@@ -23,7 +23,7 @@ public class Game {
 
     // Construct a game 
     public Game(String[] imagePaths, String backImagePath) {
-        deck = new Deck(imagePaths, backImagePath);
+        deck = new Deck(imagePaths, backImagePath, this);
         
         
         // Initialize hidden cards count
@@ -144,7 +144,7 @@ public class Game {
         // Decrease the hidden cards count by 3 (joker and its pair)
 
        
-        hiddenCardsCount.set(hiddenCardsCount.get() - 3);
+        
         System.out.println("Entered Joker Match");
         if (firstSelectedCard instanceof Joker) {
             System.out.println("First card is a joker, reset first selection");
@@ -216,8 +216,8 @@ public class Game {
     public int getHiddenCardsCount() {
         return hiddenCardsCount.get();
     }
-    private int decreaseHiddenCardsCount() {
-        return hiddenCardsCount.get() - 1;
+    public void decreaseHiddenCardsCount() {
+        hiddenCardsCount.set(hiddenCardsCount.get() - 1);
     }
 
     // Return the number of remaining tries

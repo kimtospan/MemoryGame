@@ -6,10 +6,12 @@ import java.util.List;
 public class Joker extends Card {
     private List<Card> pair;
     private Label jokerLabel;
+    private Game game;
 
-    public Joker(String imagePath, String backImagePath, List<Card> associatedPair) {
+    public Joker(String imagePath, String backImagePath, List<Card> associatedPair, Game game) {
         super(imagePath, backImagePath);
         this.pair = associatedPair;
+        this.game = game;
 
         // Initialize the label to indicate this is a Joker card
         jokerLabel = new Label("JOKER");
@@ -26,7 +28,10 @@ public class Joker extends Card {
         // If the card is on its back, it means the flip function was called to reveal the card
         // since the card is a joker, upon flipping, the associated pair will also be flipped
         if (getImageView().getImage().getUrl().endsWith(getBackImagePath())) {
+            //Decrease hidden cards count
+            game.decreaseHiddenCardsCount();
             // Reveal the associated pair
+
             flipPair();
             // Set the image to the front image
             getImageView().setImage(new Image(getClass().getResource(getImagePath()).toExternalForm()));
@@ -43,6 +48,7 @@ public class Joker extends Card {
         for (Card card : pair) {
             // If they haven't been matched yet and are currently showing their back, flip them
             if (!card.isMatched() && card.getImageView().getImage().getUrl().endsWith(card.getBackImagePath())) {
+                game.decreaseHiddenCardsCount();
                 card.flip();
                 
                 
