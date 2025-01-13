@@ -5,6 +5,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 import javafx.animation.AnimationTimer;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.StringBinding;
 
 public class GameSceneCreator extends SceneCreator {
 
@@ -31,8 +33,13 @@ public class GameSceneCreator extends SceneCreator {
         Label remainingTriesLabel = new Label("Remaining Tries: " + game.getRemainingTries());
         remainingTriesLabel.setStyle("-fx-font-size: 16px;");
 
-        Label elapsedTimeLabel = new Label("Elapsed Time: 0s");
+       Label elapsedTimeLabel = new Label();
         elapsedTimeLabel.setStyle("-fx-font-size: 16px;");
+        StringBinding elapsedTimeBinding = Bindings.createStringBinding(
+            () -> "Elapsed Time: " + game.getElapsedTime() + "s",
+            game.elapsedTimeProperty()
+        );
+        elapsedTimeLabel.textProperty().bind(elapsedTimeBinding);
 
         Label scoreLabel = new Label("Score: " + game.getScore());
         scoreLabel.setStyle("-fx-font-size: 16px;");
@@ -40,23 +47,15 @@ public class GameSceneCreator extends SceneCreator {
         //When scene begins, start the global startTimer
         game.startTimer();
 
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                long elapsedTime = (System.currentTimeMillis() - App.startTime) / 1000;
-                elapsedTimeLabel.setText("Elapsed Time: " + elapsedTime + "s");
-            }
-        };
-        timer.start();
+        
+
 
         game.setOnCardPairSelectedListener((hiddenCardsCount, remainingTries, score) -> {
             hiddenCardsLabel.setText("Hidden Cards: " + hiddenCardsCount);
             remainingTriesLabel.setText("Remaining Tries: " + remainingTries);
             scoreLabel.setText("Score: " + score);
             //
-            if (hiddenCardsCount <= 0 || remainingTries <= 0) {
-                timer.stop(); // Stop the timer when the game is over
-            }
+            
 
         });
 
@@ -88,5 +87,5 @@ public class GameSceneCreator extends SceneCreator {
         layout.getChildren().addAll(goBackButton, exitButton);
         return new Scene(layout, getWidth(), getHeight());
     }
-    
+   
 }

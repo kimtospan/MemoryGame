@@ -1,14 +1,19 @@
 import javafx.scene.layout.GridPane;
 import java.util.List;
+
+import javafx.animation.AnimationTimer;
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 // Game logic
 public class Game {
     private Deck deck;
     private Card firstSelectedCard;
     private Card secondSelectedCard;
+    private AnimationTimer timer;
     
     private int multiplier = 1;
     private IntegerProperty score;  
@@ -20,6 +25,8 @@ public class Game {
     private IntegerProperty remainingTries;
     // Listener for card pair selections
     private OnCardPairSelectedListener onCardPairSelectedListener;
+    // Like interger Property, ill show the time as a long property with animation timer which apparently exists
+    private LongProperty elapsedTime = new SimpleLongProperty();
 
     // Construct a game 
     public Game(String[] imagePaths, String backImagePath) {
@@ -170,18 +177,7 @@ public class Game {
             firstSelectedCard = null;
             secondSelectedCard = null;
         }
-
-
-
-
-
-
-
-
-        if (hiddenCardsCount.get() <= 0) {
-            saveGameRecord();
-        }
-
+        
         // Notify listener
         if (onCardPairSelectedListener != null) {
             onCardPairSelectedListener.onCardPairSelected(hiddenCardsCount.get(), remainingTries.get(), score.get());
@@ -190,24 +186,39 @@ public class Game {
 
     }
 
-// Function to start time
+
+    public LongProperty elapsedTimeProperty() {
+        return elapsedTime;
+    }
+    public long getElapsedTime() {
+        return elapsedTime.get();
+    }
+    public void setElapsedTime(long elapsedTime) {
+        this.elapsedTime.set(elapsedTime);
+    }
     public void startTimer() {
         App.startTime = System.currentTimeMillis();
+        timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                long elapsedTime = (System.currentTimeMillis() - App.startTime) / 1000;
+                setElapsedTime(elapsedTime);
+            }
+        };
+        timer.start();
     }
+    
+
+    
+    
+
     private void stopTimer() {
+        if (timer != null) {
+            timer.stop();
+        }
         App.endTime = System.currentTimeMillis();
     }
 
-
-
-
-
-    private void saveGameRecord() {
-        long endTime = System.currentTimeMillis();
-        long timeTaken = (endTime - App.startTime) / 1000; // in seconds
-        GameRecord record = new GameRecord(App.playerName, timeTaken, App.difficulty);
-        //GameRecordManager.saveRecord(record);
-    }
     public int getScore() {
         return score.get();
     }
@@ -216,6 +227,7 @@ public class Game {
     public int getHiddenCardsCount() {
         return hiddenCardsCount.get();
     }
+
     public void decreaseHiddenCardsCount() {
         hiddenCardsCount.set(hiddenCardsCount.get() - 1);
     }
@@ -245,7 +257,7 @@ public class Game {
         if (hiddenCardsCount.get() <= 0 || remainingTries.get() <= 0) {
             stopTimer();
             
-            saveGameRecord();
+            GameRecordManager.saveRecord(App.playerName, getElapsedTime(), score.get());
         }
         
     }

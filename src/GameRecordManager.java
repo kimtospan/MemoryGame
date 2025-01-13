@@ -14,7 +14,8 @@ public class GameRecordManager {
     private static final String FILE_PATH = "GameRecords.csv";
 
     // Save a single game record to the CSV file
-    public static void saveRecord(GameRecord record) {
+    public static void saveRecord(String username, long elapsedTime, int score) {
+        GameRecord record = new GameRecord(username, elapsedTime, score);
         // Save a record using BufferedWriter
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
             writer.write(record.fromGameRecordToCSV());

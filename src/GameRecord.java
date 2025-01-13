@@ -6,14 +6,14 @@ import java.time.format.DateTimeFormatter;
 public class GameRecord {
     private String username;
     private LocalDateTime dateTime;
-    private long timeToCompletion; // in seconds
+    private long elapsedTime; // in seconds
     private int score;
 
     // represents a game record
-    public GameRecord(String username, long timeToCompletion, int score) {
+    public GameRecord(String username, long elasedTime, int score) {
         this.username = username;
         this.dateTime = LocalDateTime.now();
-        this.timeToCompletion = timeToCompletion;
+        this.elapsedTime = elapsedTime;
         this.score = score;
     }
 
@@ -22,7 +22,7 @@ public class GameRecord {
     public String fromGameRecordToCSV() {
         // uhhh not really needed but its in doc so why not
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return String.format("%s,%s,%d,%d", username, dateTime.format(formatter), timeToCompletion, score);
+        return String.format("%s,%s,%d,%d", username, dateTime.format(formatter), elapsedTime, score);
     }
     // Change from a CSV line to object
     public GameRecord fromCSVToGameRecord(String csv) {
@@ -33,7 +33,7 @@ public class GameRecord {
         // Index 1 is the date by taking the local date time
         this.dateTime = LocalDateTime.parse(data[1], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         // Index 2 is the time to completion
-        this.timeToCompletion = Long.parseLong(data[2]);
+        this.elapsedTime = Long.parseLong(data[2]);
         // Index 3 is the score
         this.score = Integer.parseInt(data[3]);
         return this;
