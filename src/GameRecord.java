@@ -9,10 +9,12 @@ public class GameRecord {
     private long elapsedTime; // in seconds
     private int score;
 
+
     // represents a game record
     public GameRecord(String username, long elapsedTime, int score) {
         this.username = username;
         this.dateTime = LocalDateTime.now();
+        
         this.elapsedTime = elapsedTime;
         this.score = score;
     }
@@ -41,5 +43,12 @@ public class GameRecord {
 
     public static String getCSVHeader() {
         return "Username,DateTime,TimeTaken,Score";
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return String.format("%s, %s, Time: %d seconds, Score: %d",
+                username, dateTime.format(formatter), elapsedTime, score);
     }
 }

@@ -8,6 +8,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
 import javafx.scene.layout.StackPane;
+
+import java.util.List;
+
 import javafx.geometry.Pos;
 
 public class MainSceneCreator extends SceneCreator {
@@ -106,6 +109,38 @@ public class MainSceneCreator extends SceneCreator {
             App.primaryStage.setTitle("Game Scene");
             
         });
+        // The last 10 records 
+         // Load the last 10 game records
+        List<GameRecord> records = GameRecordManager.loadRecords();
+        int recordCount = records.size();
+        int start = Math.max(0, recordCount - 10);
+        List<GameRecord> last10Records = records.subList(start, recordCount);
+
+        VBox recordsBox = new VBox(10);
+        recordsBox.setAlignment(Pos.CENTER_RIGHT);
+        recordsBox.setStyle("-fx-padding: 10px; -fx-border-color: black; -fx-border-width: 1px;");
+        Label recordsTitle = new Label("Last 10 Players:");
+        recordsTitle.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        recordsBox.getChildren().add(recordsTitle);
+
+        for (GameRecord record : last10Records) {
+            Label recordLabel = new Label(record.toString());
+            recordsBox.getChildren().add(recordLabel);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         //The about button
         Button aboutButton = new Button("About");
         //On being clicked
@@ -137,7 +172,7 @@ public class MainSceneCreator extends SceneCreator {
             App.primaryStage.close();
         });
 
-        layout.getChildren().addAll(titleBox, nameLabel, nameField, difficultyLabel, difficultyComboBox, cardTypeLabel, cardTypeComboBox, startGameButton, aboutButton, exitButton);
+        layout.getChildren().addAll(titleBox, nameLabel, nameField, difficultyLabel, difficultyComboBox, cardTypeLabel, cardTypeComboBox, startGameButton, aboutButton, exitButton, recordsBox);
         return new Scene(layout, getWidth(), getHeight());
     }
 }
