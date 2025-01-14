@@ -2,9 +2,11 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 // To show when the user played
 
@@ -15,7 +17,7 @@ public class GameRecordManager {
 
     // Save a single game record to the CSV file
     public static void saveRecord(String username, long elapsedTime, int score) {
-        GameRecord record = new GameRecord(username, elapsedTime, score);
+        GameRecord record = new GameRecord(username, elapsedTime, App.difficulty, score);
         // Save a record using BufferedWriter
         System.out.println("Saving record: " + record.fromGameRecordToCSV());
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
@@ -40,7 +42,7 @@ public class GameRecordManager {
             for (String line : lines) {
                 // If the line is not empty
                 if (!line.trim().isEmpty()) {
-                    GameRecord record = new GameRecord("", 0, 0).fromCSVToGameRecord(line);
+                    GameRecord record = new GameRecord("", 0,0, 0).fromCSVToGameRecord(line);
                     records.add(record);
                 }
             }
@@ -49,6 +51,24 @@ public class GameRecordManager {
             e.printStackTrace();
         }
         return records;
+    }
+     // Find the highest score for each difficulty
+    public static Map<Integer, Integer> findHighestScores() {
+        List<GameRecord> records = loadRecords();
+        Map<Integer, Integer> highestScores = new HashMap<>();
+        highestScores.put(0, 0);
+        highestScores.put(1, 0);
+        highestScores.put(2, 0);
+
+        for (GameRecord record : records) {
+            int difficulty = record.getDifficulty();
+            int score = record.getScore();
+            if (score > highestScores.get(difficulty)) {
+                highestScores.put(difficulty, score);
+            }
+        }
+
+        return highestScores;
     }
 
     
