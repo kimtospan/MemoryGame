@@ -11,13 +11,12 @@ public class GameRecord {
     private int score;
 
 
-    // represents a game record
+    // Represents a game record
     
     public GameRecord(String username, long elapsedTime, int difficulty, int score) {
         this.username = username;
         this.dateTime = LocalDateTime.now();
         this.difficulty = difficulty;
-        
         this.elapsedTime = elapsedTime;
         this.score = score;
     }

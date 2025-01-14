@@ -8,7 +8,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-// To show when the user played
+// A class to manage game record objects.
+///will 
 
 
 // Function to handle the game records in the csv
