@@ -6,6 +6,7 @@ import java.util.List;
 public class Joker extends Card {
     private List<Card> pair;
     private Label jokerLabel;
+    // Game reference to decrease the hidden cards count
     private Game game;
 
     public Joker(String imagePath, String backImagePath, List<Card> associatedPair, Game game) {
