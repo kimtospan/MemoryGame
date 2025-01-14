@@ -7,6 +7,8 @@ import java.util.Random;
 
 public class ImageManager {
     
+    //There are 3 types of images
+    // For each type, we save in an array the path to the images located in the relative folder inside img
     private static final String[] TICHU_IMAGES = {
         "/img/tichu/2black.png", "/img/tichu/2blue.png", "/img/tichu/2green.png", "/img/tichu/2red.png",
         "/img/tichu/3black.png", "/img/tichu/3blue.png", "/img/tichu/3green.png", "/img/tichu/3red.png",
@@ -56,6 +58,7 @@ public class ImageManager {
        "/img/classic/ClassicAClub.png", "/img/classic/ClassicADiamond.png", "/img/classic/ClassicAHeart.png", "/img/classic/ClassicASpade.png", 
     };
 
+    //Each image type has one back image
     private static final String TICHU_BACK_IMAGE = "/img/tichu/back.png";
     private static final String VINTAGE_BACK_IMAGE = "/img/vintage/VintageBack.png";
     private static final String CLASSIC_BACK_IMAGE = "/img/classic/ClassicBack.png";
@@ -87,7 +90,9 @@ public class ImageManager {
                 return TICHU_BACK_IMAGE; // Default to Tichu if no valid selection
         }
     }
-
+// The generateCardPairs method shuffles a list of available images 
+// and selects a specified number of pairs, reusing images if necessary.
+//  
     public static String[] generateCardPairs(String[] availableImages, int numPairs) {
         List<String> availableImagesList = new ArrayList<>();
         Collections.addAll(availableImagesList, availableImages);
