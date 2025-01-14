@@ -9,14 +9,24 @@ import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 // Game logic
+
 public class Game {
+    // A game has a deck
     private Deck deck;
+    // We keep track of the first and second selected card
     private Card firstSelectedCard;
     private Card secondSelectedCard;
+    // We keep track of the time it takes to finish the game
+    // We use an animation timer
+    //i t updates once per frame(?) 
     private AnimationTimer timer;
     
+    // score logic, we need both a score and a multiplier
     private int multiplier = 1;
     private IntegerProperty score;  
+
+
+//In order to show the intergers (and one long) in real time, we use properties
     // Property to track the number of hidden cards
     private IntegerProperty hiddenCardsCount;
     // Property to track the number of unsuccessful attempts
@@ -30,6 +40,7 @@ public class Game {
 
     // Construct a game 
     public Game(String[] imagePaths, String backImagePath) {
+        // Create the deck for the round 
         deck = new Deck(imagePaths, backImagePath, this);
         
         
@@ -47,14 +58,21 @@ public class Game {
 
     // Function to create the game board
     public GridPane createGameBoard(int gridSize) {
+        // Create a grid pane to hold the cards in a grid 
+    
         GridPane gridPane = new GridPane();
+        // tweak with it till it looks somewhat good
+        // Padding betweed the card and the border because it looks aufull when stuck toghether
         gridPane.setPadding(new javafx.geometry.Insets(10));
         gridPane.setHgap(10);
         gridPane.setVgap(10);
+        // Obv center
         gridPane.setAlignment(javafx.geometry.Pos.CENTER);
         
         // Loop through the cards and add them to the grid
-        // Add an event handler to each card to handle clicks
+        // Get the cards from the deck and for each card
+        // add an event handler to it and add it to the grid
+        // The event handler is the logic of clicking (flipping) the card
         List<Card> cards = deck.getCards();
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
@@ -71,39 +89,48 @@ public class Game {
         return gridPane;
     }
 
-    // Logic of turning the card. 
+    // What happens when a card is clicked 
     //If either card is a joker, call handleJokerMatch(), else call checkForMatch()
     private void handleCardClick(Card card) {
         // If the card is already matched, do nothing
+        // basically if already turned over dont allow clicks
         if (card.isMatched()) {
             return;
         }
+        // If the card is not matched, flip it
         if (firstSelectedCard == null) {
             firstSelectedCard = card;
             System.out.println("Flip the first clicked card");
             firstSelectedCard.flip();
+            // If that card was a joker, call handleJokerMatch()
             if (firstSelectedCard instanceof Joker) {
                 handleJokerMatch();
             }
         } else if (secondSelectedCard == null && card != firstSelectedCard) {
+            // If the second card is not the same as the first card
+            // so we dont click the same card twice
             secondSelectedCard = card;
             secondSelectedCard.flip();
             System.out.println("Flip the second clicked card");
+            // If the second card is a joker, call handleJokerMatch()
             if (secondSelectedCard instanceof Joker) {
                 handleJokerMatch();
             } else {
+                // Only check for match when neither card is a joker
                 checkForMatch();
             }
         }
     }
 
+    // Compare the two selected cards
+    // and if add logic when matched.
     private void checkForMatch() {
         if (firstSelectedCard.getImagePath().equals(secondSelectedCard.getImagePath())) {
             // If matched
-            // Increase score by 25 points, integer property to show the score
+            // Increase score by 25 points, multiplied by a multiplier that doubles for each
+            //concecutive correct match(or joker)
+            // integer property to show the score
             score.set(score.get() + multiplier * 25); 
-
-
             multiplier = multiplier * 2 ;
             // If the paths of the two selected cards are the same, they match
             firstSelectedCard.setMatched(true);
@@ -122,7 +149,8 @@ public class Game {
             // Reset multiplier on unsuccessful attempt
             multiplier = 1;
 
-            
+            // PauseTransition is a JavaFX class that pauses, so we use this 
+            // for the delay.
             PauseTransition pause = new PauseTransition(Duration.seconds(1));
             pause.setOnFinished(e -> {
                 firstSelectedCard.flip();
@@ -143,6 +171,7 @@ public class Game {
         }
     }
 
+    // Handle the case when a joker is clicked
     private void handleJokerMatch() { 
         // Increase score and multiplier. 
         score.set(score.get() + multiplier * 25);
@@ -197,6 +226,8 @@ public class Game {
     public void setElapsedTime(long elapsedTime) {
         this.elapsedTime.set(elapsedTime);
     }
+
+    // Start the timer when the game starts
     public void startTimer() {
         App.startTime = System.currentTimeMillis();
         timer = new AnimationTimer() {

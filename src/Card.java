@@ -7,6 +7,7 @@ public class Card implements Flippable {
     // The path to the image of both the card and its back version
     private String imagePath;
     private String backImagePath;
+    //So we have the image paths , and we pass them to the image view
     // The image view of the card, imageView is a JavaFX node that displays an image
     private ImageView imageView;
     // Whether the card has been matched with another card
@@ -14,6 +15,9 @@ public class Card implements Flippable {
     //The pane holds the image view and allows the joker to stack a label on top of it
     protected StackPane cardPane;
 
+
+    // This is what a card is
+    
     public Card(String imagePath, String backImagePath) {
         this.imagePath = imagePath;
         this.backImagePath = backImagePath;
@@ -33,6 +37,9 @@ public class Card implements Flippable {
         return imageView;
     }
 
+
+    // Function to flip the card. Joker also has this function but it overrides it
+    // Literally just flips the card
     @Override
     public void flip() {
         // When its time to flip the image
