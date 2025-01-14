@@ -14,6 +14,9 @@ import java.util.List;
 
 import javafx.geometry.Pos;
 
+// Responsible for creating the main scene of the application
+//Has a menu of options for the user to select from in order to start the game
+//Also has info about the game and the creators, along with the last 4 people that played
 public class MainSceneCreator extends SceneCreator {
     public MainSceneCreator(double width, double height) {
         super(width, height);
@@ -21,6 +24,7 @@ public class MainSceneCreator extends SceneCreator {
 
     @Override
     Scene createScene() {
+        // The base layout of the main scene is a VBox aligned to the center
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
 
@@ -28,14 +32,19 @@ public class MainSceneCreator extends SceneCreator {
         Label titleLabel = new Label("Memory Game");
         titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        // Create the question mark button
+        // Create the question mark button which will 
+        // show info about the game
         Button infoButton = new Button("?");
         infoButton.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+        //on being clicked
         infoButton.setOnAction(e -> {
             Stage infoStage = new Stage();
+            //Create a new window
             infoStage.initModality(Modality.APPLICATION_MODAL);
+            // Using modality obstruct actions on other windows while open
+            // title for the window
             infoStage.setTitle("How to Play");
-
+            // The info
             Label infoLabel = new Label(
                 "Match pairs of cards by flipping them over. You have limited tries, and are being timed, so try to remember!\n\n" +
                 "Score Calculation:\n" +
@@ -47,30 +56,34 @@ public class MainSceneCreator extends SceneCreator {
                 "- The joker card and its pair are considered matched and increase your score."
             );
             infoLabel.setWrapText(true);
+            // Wrap the text
             
 
+            // Add the label to a stack pane to center it
             StackPane infoLayout = new StackPane();
             infoLayout.getChildren().add(infoLabel);
 
+            // Create the scene and show it
             Scene infoScene = new Scene(infoLayout, 400, 300);
             infoStage.setScene(infoScene);
             infoStage.showAndWait();
         });
 
+        // Put the title and info button in an HBox in order to show together
         HBox titleBox = new HBox(10);
         titleBox.setAlignment(Pos.CENTER);
         titleBox.getChildren().addAll(titleLabel, infoButton);
 
+        //Under the title we have a text field for the name of the player
         Label nameLabel = new Label("Enter your name:");
         TextField nameField = new TextField();
         nameField.setMaxWidth(200); // Set the maximum width of the TextField
-
-
-
         
-        // Add a listener to enforce a maximum of 15 characters
+        // Add a listener to enforce a maximum of 15 characters and no commas
+        // No commas so it doesnt mess with the csv
+        // idk if it does but eh
         nameField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.length() > 15) {
+            if (newValue.length() > 15 || newValue.contains(",")) {
                 nameField.setText(oldValue);
             }
         });
@@ -87,21 +100,20 @@ public class MainSceneCreator extends SceneCreator {
         
 
       
-            
-        
-
+            // The card type selection 
+            // Also a combobox
         Label cardTypeLabel = new Label("Select card type:");
         ComboBox<String> cardTypeComboBox = new ComboBox<>();
         cardTypeComboBox.getItems().addAll("Tichu", "Vintage", "Classic");
 
         Button startGameButton = new Button("Start Game");
         // Upon the click of the start game button, set the globan GridSize.
-
-
-
+        // When the game starts, 
         startGameButton.setOnAction(e -> {
+            // change the variables depending 
             App.playerName = nameField.getText();
             String difficulty = difficultyComboBox.getValue();
+            // Set the variables depending on the difficulty
             if (difficulty.equals("4x4 (Easy)")) {
                 App.gridSize = 4;
                 App.CardWidth = 100;
@@ -118,32 +130,38 @@ public class MainSceneCreator extends SceneCreator {
                 App.CardHeight = 80;
                 App.difficulty = 3;
             }
+            // Set the card type
             App.cardType = cardTypeComboBox.getValue();
 
+            // Create the game scene
             SceneCreator gameSceneCreator = new GameSceneCreator(1200, 1000);
             App.gameScene = gameSceneCreator.createScene();
             App.primaryStage.setScene(App.gameScene);
             App.primaryStage.setTitle("Game Scene");
             
         });
-        // The last 10 records 
-         // Load the last 10 game records
-        List<GameRecord> records = GameRecordManager.loadRecords();
-        int recordCount = records.size();
-        int start = Math.max(0, recordCount - 10);
-        List<GameRecord> last10Records = records.subList(start, recordCount);
+       // Load the game records
+       // I chose the last 4 to not spam 
+       // get the records from the cvs file
+List<GameRecord> records = GameRecordManager.loadRecords();
+// Find out how big it is
+int recordCount = records.size();
+// Show the last 4
+int recordsToShow = Math.min(4, recordCount);
+List<GameRecord> lastRecords = records.subList(recordCount - recordsToShow, recordCount);
 
-        VBox recordsBox = new VBox(10);
-        recordsBox.setAlignment(Pos.CENTER_RIGHT);
-        recordsBox.setStyle("-fx-padding: 10px; -fx-border-color: black; -fx-border-width: 1px;");
-        Label recordsTitle = new Label("Last 10 Players:");
-        recordsTitle.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-        recordsBox.getChildren().add(recordsTitle);
-
-        for (GameRecord record : last10Records) {
-            Label recordLabel = new Label(record.toString());
-            recordsBox.getChildren().add(recordLabel);
-        }
+// Create a VBox to hold the last 4 players
+VBox recordsBox = new VBox(10);
+recordsBox.setAlignment(Pos.CENTER_RIGHT);
+recordsBox.setStyle("-fx-padding: 10px; -fx-border-color: black; -fx-border-width: 1px;");
+Label recordsTitle = new Label("Last 4 Players:");
+recordsTitle.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+recordsBox.getChildren().add(recordsTitle);
+// for each record in those 4, create a label and add it to the VBox
+for (GameRecord record : lastRecords) {
+    Label recordLabel = new Label(record.toString());
+    recordsBox.getChildren().add(recordLabel);
+}
 
        
 
