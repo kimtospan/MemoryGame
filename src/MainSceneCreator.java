@@ -83,9 +83,10 @@ public class MainSceneCreator extends SceneCreator {
         // No commas so it doesnt mess with the csv
         // idk if it does but eh
         nameField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.length() > 15 || newValue.contains(",")) {
+            if (newValue.length() > 15 || newValue.contains(",") || !newValue.matches("[a-zA-Z]*") ) {
                 nameField.setText(oldValue);
             }
+
         });
           
         

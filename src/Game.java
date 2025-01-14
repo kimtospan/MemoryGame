@@ -1,4 +1,10 @@
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
 import java.util.List;
 
 import javafx.animation.AnimationTimer;
@@ -167,6 +173,7 @@ public class Game {
             pause.play();
             // Decrease remaining tries count
             remainingTries.set(remainingTries.get() - 1);
+            isGameOver();
             
         }
     }
@@ -287,13 +294,41 @@ public class Game {
     // Funcion to check if game is over by checking the value of the counter.
     public void isGameOver() {
         System.out.println("Checking if game is over");
-        if (hiddenCardsCount.get() <= 0 || remainingTries.get() <= 0) {
-            System.out.println("Game over");
+        if (hiddenCardsCount.get() <= 0) {
+            System.out.println("Game won");
+           
             stopTimer();
+            GameRecordManager.saveRecord(App.playerName, getElapsedTime(), score.get()); 
+            // Save the game record
+            showResultWindow("You win!");
+        } else if (remainingTries.get() <= 0) {
+            System.out.println("Game over - no remaining tries");
             
-            GameRecordManager.saveRecord(App.playerName, getElapsedTime(), score.get());
+            stopTimer();
+            // Save the game record
+            showResultWindow("You lose!");
         }
-        
     }
+
+    //
+    // Last minute addition 
+    // Show window when game over, parameter is the message to show
+    // I dont like having a stage creation here but alas
+    private void showResultWindow(String message) {
+        Stage resultStage = new Stage();
+        resultStage.initModality(Modality.APPLICATION_MODAL);
+        resultStage.setTitle("Game Over");
+
+        Label resultLabel = new Label(message);
+        resultLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+
+        StackPane layout = new StackPane();
+        layout.getChildren().add(resultLabel);
+
+        Scene resultScene = new Scene(layout, 300, 200);
+        resultStage.setScene(resultScene);
+        resultStage.showAndWait();
+    }
+
    
 }
