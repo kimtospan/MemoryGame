@@ -10,6 +10,7 @@ import javafx.stage.Modality;
 import javafx.scene.layout.StackPane;
 
 import java.util.List;
+import java.util.Map;
 
 import javafx.geometry.Pos;
 
@@ -64,17 +65,37 @@ public class MainSceneCreator extends SceneCreator {
         TextField nameField = new TextField();
         nameField.setMaxWidth(200); // Set the maximum width of the TextField
 
+
+
+        
         // Add a listener to enforce a maximum of 15 characters
         nameField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.length() > 15) {
                 nameField.setText(oldValue);
             }
         });
+          
+        // Create a label to display the highest score for the selected difficulty
+          Label highestScoreLabel = new Label();
+          highestScoreLabel.setStyle("-fx-font-size: 16px;");
 
         // Handle the selection of difficulty and card type using a ComboBox for both
         Label difficultyLabel = new Label("Select difficulty:");
+
+        //Load the highest scores to later display them 
+        Map<Integer, Integer> highestScores = GameRecordManager.findHighestScores();
         ComboBox<String> difficultyComboBox = new ComboBox<>();
         difficultyComboBox.getItems().addAll("4x4 (Easy)", "8x8 (Medium)", "10x10 (Hard)");
+
+         // Set initial selection and update the highest score label
+         difficultyComboBox.getSelectionModel().select(0);
+         highestScoreLabel.setText("Highest Score: " + highestScores.get(0));
+
+         // Update the highest score label when the difficulty changes
+         difficultyComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            int difficulty = difficultyComboBox.getSelectionModel().getSelectedIndex();
+            highestScoreLabel.setText("Highest Score: " + highestScores.get(difficulty));
+        });
 
         Label cardTypeLabel = new Label("Select card type:");
         ComboBox<String> cardTypeComboBox = new ComboBox<>();
@@ -82,6 +103,9 @@ public class MainSceneCreator extends SceneCreator {
 
         Button startGameButton = new Button("Start Game");
         // Upon the click of the start game button, set the globan GridSize.
+
+
+
         startGameButton.setOnAction(e -> {
             App.playerName = nameField.getText();
             String difficulty = difficultyComboBox.getValue();
@@ -128,18 +152,31 @@ public class MainSceneCreator extends SceneCreator {
             recordsBox.getChildren().add(recordLabel);
         }
 
+        VBox highestScoresBox = new VBox(10);
+        highestScoresBox.setAlignment(Pos.CENTER_LEFT);
+        highestScoresBox.setStyle("-fx-padding: 10px; -fx-border-color: black; -fx-border-width: 1px;");
+        Label highestScoresTitle = new Label("Highest Scores:");
+        highestScoresTitle.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        highestScoresBox.getChildren().add(highestScoresTitle);
 
-
-
-
-
-
-
-
-
-
-
-
+        for (Map.Entry<Integer, Integer> entry : highestScores.entrySet()) {
+            String difficultyText;
+            switch (entry.getKey()) {
+                case 0:
+                    difficultyText = "4x4 (Easy)";
+                    break;
+                case 1:
+                    difficultyText = "8x8 (Medium)";
+                    break;
+                case 2:
+                    difficultyText = "10x10 (Hard)";
+                    break;
+                default:
+                    difficultyText = "Unknown";
+            }
+            Label scoreLabel = new Label(difficultyText + ": " + entry.getValue());
+            highestScoresBox.getChildren().add(scoreLabel);
+        }
 
         //The about button
         Button aboutButton = new Button("About");
@@ -172,7 +209,7 @@ public class MainSceneCreator extends SceneCreator {
             App.primaryStage.close();
         });
 
-        layout.getChildren().addAll(titleBox, nameLabel, nameField, difficultyLabel, difficultyComboBox, cardTypeLabel, cardTypeComboBox, startGameButton, aboutButton, exitButton, recordsBox);
+        layout.getChildren().addAll(titleBox, nameLabel, nameField, difficultyLabel, difficultyComboBox,highestScoreLabel, cardTypeLabel, cardTypeComboBox, startGameButton, aboutButton, exitButton, recordsBox, highestScoresBox);
         return new Scene(layout, getWidth(), getHeight());
     }
 }
