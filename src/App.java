@@ -24,7 +24,7 @@ public class App extends Application {
     public void start(Stage primaryStage) {
 
         App.primaryStage = primaryStage;
-        SceneCreator mainSceneCreator = new MainSceneCreator(500, 500);
+        SceneCreator mainSceneCreator = new MainSceneCreator(550, 550);
         mainScene = mainSceneCreator.createScene();
         
 

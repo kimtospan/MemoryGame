@@ -279,7 +279,7 @@ public class Game {
         this.onCardPairSelectedListener = listener;
     }
 
-    // Interface for the listener
+    //  Callback mechanism to notify the listener when a card pair is selected
     public interface OnCardPairSelectedListener {
         void onCardPairSelected(int hiddenCardsCount, int remainingTries, int score);
     }
