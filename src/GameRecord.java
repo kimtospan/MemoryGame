@@ -39,9 +39,9 @@ public class GameRecord {
         // Index 2 is the difficulty
         this.difficulty = Integer.parseInt(data[2]);
         // Index 3 is the time to completion
-        this.elapsedTime = Long.parseLong(data[2]);
+        this.elapsedTime = Long.parseLong(data[3]);
         // Index 4 is the score
-        this.score = Integer.parseInt(data[3]);
+        this.score = Integer.parseInt(data[4]);
         return this;
     }
 
