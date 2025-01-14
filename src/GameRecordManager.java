@@ -53,24 +53,6 @@ public class GameRecordManager {
         }
         return records;
     }
-     // Find the highest score for each difficulty
-    public static Map<Integer, Integer> findHighestScores() {
-        List<GameRecord> records = loadRecords();
-        Map<Integer, Integer> highestScores = new HashMap<>();
-        highestScores.put(0, 0);
-        highestScores.put(1, 0);
-        highestScores.put(2, 0);
-
-        for (GameRecord record : records) {
-            int difficulty = record.getDifficulty();
-            int score = record.getScore();
-            if (score > highestScores.get(difficulty)) {
-                highestScores.put(difficulty, score);
-            }
-        }
-
-        return highestScores;
-    }
-
+    
     
 }

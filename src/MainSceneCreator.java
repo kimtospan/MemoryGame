@@ -80,18 +80,15 @@ public class MainSceneCreator extends SceneCreator {
         // Handle the selection of difficulty and card type using a ComboBox for both
         Label difficultyLabel = new Label("Select difficulty:");
 
-        //Load the highest scores to later display them 
-        Map<Integer, Integer> highestScores = GameRecordManager.findHighestScores();
+    
         ComboBox<String> difficultyComboBox = new ComboBox<>();
         difficultyComboBox.getItems().addAll("4x4 (Easy)", "8x8 (Medium)", "10x10 (Hard)");
 
         
 
-         // Update the highest score label when the difficulty changes
-         difficultyComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            int difficulty = difficultyComboBox.getSelectionModel().getSelectedIndex();
+      
             
-        });
+        
 
         Label cardTypeLabel = new Label("Select card type:");
         ComboBox<String> cardTypeComboBox = new ComboBox<>();
