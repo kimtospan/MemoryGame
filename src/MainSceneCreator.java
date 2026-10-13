@@ -177,7 +177,7 @@ for (GameRecord record : lastRecords) {
             //Set the title of the window to about
             aboutStage.setTitle("About");
             //Add the label talking about us
-            Label aboutLabel = new Label("Made by Vasiliadis Dimitrios and Salamalikis Panagiotis as a class project for \"Object-Oriented Programming 2\"");
+            Label aboutLabel = new Label("Made as a class project for \"Object-Oriented Programming 2\"");
             aboutLabel.setWrapText(true);
             aboutLabel.setStyle("-fx-padding: 10px;");
 

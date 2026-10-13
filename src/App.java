@@ -1,8 +1,7 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-// Dimitrios Vasileiadis 321/2022012
-// Panagiotis Salamalikis 321/2022182
+// Memory Game application entry point
 
 
 public class App extends Application {
